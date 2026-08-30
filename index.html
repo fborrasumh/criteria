@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CriterIA · Usar IA en tus trabajos con criterio</title>
+<meta name="description" content="Alfabetización en IA generativa para estudiantes universitarios: qué uso está permitido en cada tarea, cómo comprobar si las referencias existen de verdad, cómo llevar la bitácora de uso y cómo declararlo en un trabajo. Universidad Miguel Hernández de Elche.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f7f5; --surface:#fff; --border:#e4e3df; --border-strong:#cccbc6;
+  --text:#1a1916; --muted:#7a7872;
+  --acc:#1a4fd8; --acc-soft:#eef2fd; --acc-dark:#1440b0;
+  --ok:#126649; --ok-soft:#eaf3ef;
+  --bad:#b83a0c; --bad-soft:#fdf0ea;
+  --warn:#8a6d05; --warn-soft:#fdf6e0;
+  --radius:8px; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
+
+header{background:#1a1916;color:#fff;padding:26px 24px 0}
+.hwrap{max-width:1060px;margin:0 auto}
+.htop{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.brand h1{font-family:'Sora',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.025em;line-height:1.1}
+.brand h1 span{color:#7d9fff}
+.brand p{color:#96948e;font-size:.85rem;margin-top:5px;max-width:540px}
+.hlevel{text-align:right}
+.hlevel b{font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:800;display:block;color:#7d9fff;line-height:1}
+.hlevel small{font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:#75736e}
+nav{display:flex;gap:2px;margin-top:22px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{background:transparent;border:0;border-bottom:2px solid transparent;color:#8d8b85;font:600 .82rem/1 'Inter',sans-serif;padding:12px 15px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:7px;transition:color .15s,border-color .15s}
+nav button:hover{color:#ddd}
+nav button.active{color:#fff;border-bottom-color:#7d9fff}
+nav button i{font-size:1rem}
+
+main{max-width:1060px;margin:0 auto;padding:26px 24px 90px}
+.view{display:none;animation:fade .18s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.card>h2{font-family:'Sora',sans-serif;font-size:1.02rem;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.card>h2 i{color:var(--acc)}
+.card>p.hint{color:var(--muted);font-size:.83rem;margin-bottom:16px;max-width:74ch}
+.eyebrow{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+
+label{display:block;font-size:.73rem;font-weight:600;color:#4d4b46;margin-bottom:5px}
+input[type=text],input[type=password],select,textarea{width:100%;font:400 .87rem/1.45 'Inter',sans-serif;color:var(--text);background:#fdfdfc;border:1px solid var(--border-strong);border-radius:6px;padding:8px 10px;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+textarea{resize:vertical;min-height:90px;font-family:'Inter',sans-serif}
+.grid{display:grid;gap:13px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(165px,1fr))}
+.help{font-size:.72rem;color:var(--muted);margin-top:4px}
+
+a.btn{text-decoration:none}
+.btn{font:600 .83rem/1 'Inter',sans-serif;border-radius:6px;padding:9px 15px;cursor:pointer;border:1px solid transparent;display:inline-flex;align-items:center;gap:7px;transition:background .15s,border-color .15s,opacity .15s}
+.btn-primary{background:var(--acc);color:#fff}
+.btn-primary:hover{background:var(--acc-dark)}
+.btn-ghost{background:transparent;color:#3d3b37;border-color:var(--border-strong)}
+.btn-ghost:hover{background:#f0efec}
+.btn-danger{background:transparent;color:var(--bad);border-color:#e8cfc3}
+.btn-danger:hover{background:var(--bad-soft)}
+.btn-sm{font-size:.75rem;padding:6px 11px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.spacer{flex:1}
+
+/* niveles */
+.lv{border:1px solid var(--border);border-left:3px solid var(--border-strong);border-radius:var(--radius);padding:15px 17px;margin-bottom:10px;background:var(--surface);cursor:pointer;transition:border-color .15s,background .15s}
+.lv:hover{border-color:var(--acc)}
+.lv.on{border-left-color:var(--acc);background:var(--acc-soft);border-color:#c4d2f7}
+.lv-h{display:flex;gap:13px;align-items:baseline}
+.lv-n{font-family:'Sora',sans-serif;font-weight:800;font-size:1.25rem;color:var(--acc);min-width:26px}
+.lv-t{font-weight:700;font-size:.95rem}
+.lv-s{font-size:.82rem;color:var(--muted);margin-top:2px}
+.lv-d{display:none;margin-top:13px;padding-top:13px;border-top:1px dashed var(--border)}
+.lv.on .lv-d{display:block}
+.lv-col{margin-bottom:11px}
+.lv-col b{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px}
+.lv-col.si b{color:var(--ok)} .lv-col.no b{color:var(--bad)} .lv-col.ev b{color:var(--warn)}
+.lv-col ul{list-style:none;font-size:.84rem}
+.lv-col li{padding-left:17px;position:relative;margin-bottom:3px;line-height:1.5}
+.lv-col li::before{position:absolute;left:0;font-family:'tabler-icons'}
+.lv-col.si li::before{content:'\\ea5e';color:var(--ok)}
+.lv-col.no li::before{content:'\\eb55';color:var(--bad)}
+.lv-col.ev li::before{content:'\\ea06';color:var(--warn)}
+
+/* referencias */
+.ref{border:1px solid var(--border);border-left:3px solid var(--border-strong);border-radius:6px;padding:12px 14px;margin-bottom:9px;background:var(--surface)}
+.ref.ok{border-left-color:var(--ok)} .ref.bad{border-left-color:var(--bad)} .ref.warn{border-left-color:#c8a415}
+.ref-in{font-size:.82rem;line-height:1.5;color:#3d3b37}
+.ref-out{font-size:.79rem;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);color:var(--muted);line-height:1.5}
+.verdict{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;border-radius:4px;padding:3px 8px;margin-bottom:7px}
+.v-ok{background:var(--ok-soft);color:var(--ok)} .v-bad{background:var(--bad-soft);color:var(--bad)}
+.v-warn{background:var(--warn-soft);color:var(--warn)} .v-nd{background:#f0efec;color:#5c5a55}
+
+.notice{border-radius:6px;padding:11px 13px;font-size:.82rem;display:flex;gap:9px;align-items:flex-start;margin-bottom:12px;line-height:1.5}
+.notice i{font-size:1.05rem;flex-shrink:0;margin-top:1px}
+.n-info{background:var(--acc-soft);color:#14389c;border:1px solid #d2ddfa}
+.n-ok{background:var(--ok-soft);color:#0d4d37;border:1px solid #c8e2d7}
+.n-bad{background:var(--bad-soft);color:#8c2d09;border:1px solid #f0d6c8}
+.n-warn{background:var(--warn-soft);color:#6b5404;border:1px solid #eee0b4}
+.n-muted{background:#f2f1ee;color:#54524d;border:1px solid var(--border)}
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty i{font-size:2.2rem;color:var(--border-strong);display:block;margin-bottom:10px}
+.empty p{font-size:.87rem;max-width:44ch;margin:0 auto}
+
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;font-size:.65rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding:0 9px 8px 0;font-weight:700;border-bottom:1px solid var(--border)}
+td{padding:9px 9px 9px 0;border-bottom:1px solid #f2f1ee;vertical-align:top}
+
+/* quiz */
+.q-opt{display:block;border:1px solid var(--border-strong);border-radius:6px;padding:11px 13px;margin-bottom:7px;font-size:.86rem;cursor:pointer;background:#fdfdfc;transition:all .13s;line-height:1.45}
+.q-opt:hover{border-color:var(--acc)}
+.q-opt.pick{border-color:var(--acc);background:var(--acc-soft)}
+.q-opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.q-opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.q-opt.locked{cursor:default}
+.q-exp{font-size:.83rem;line-height:1.55;background:#fbfbfa;border:1px solid var(--border);border-left:3px solid var(--acc);border-radius:6px;padding:12px 14px;margin-top:10px}
+.prog{height:6px;background:#eceae6;border-radius:3px;overflow:hidden;margin:14px 0}
+.prog i{display:block;height:100%;background:var(--acc);transition:width .35s}
+
+.out{font-size:.87rem;line-height:1.62;white-space:pre-wrap;background:#fbfbfa;border:1px solid var(--border);border-radius:6px;padding:14px;min-height:60px}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+.btn-ghost .spin{border-color:rgba(0,0,0,.15);border-top-color:#3d3b37}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);background:#1a1916;color:#fff;font-size:.83rem;padding:11px 19px;border-radius:99px;z-index:90;transition:transform .28s cubic-bezier(.2,.9,.3,1.2);max-width:88vw;text-align:center}
+.toast.on{transform:translateX(-50%) translateY(0)}
+footer{border-top:1px solid var(--border);padding:22px 24px 40px;text-align:center;color:var(--muted);font-size:.76rem;line-height:1.7}
+
+@media(max-width:620px){main{padding:20px 15px 70px}.card{padding:16px}.hlevel{text-align:left}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <div class="htop">
+      <div class="brand">
+        <h1>Criter<span>IA</span></h1>
+        <p>Usar inteligencia artificial en tus trabajos sin jugártela: saber qué te permite cada profesor, comprobar que las referencias existen de verdad, dejar constancia de lo que has hecho y declararlo bien.</p>
+      </div>
+      <div class="hlevel"><b id="hLv">—</b><small>Nivel de uso</small></div>
+    </div>
+    <nav>
+      <button data-view="nivel" class="active"><i class="ti ti-stairs"></i>Qué puedo usar</button>
+      <button data-view="verificar"><i class="ti ti-search"></i>Verificar referencias</button>
+      <button data-view="bitacora"><i class="ti ti-notebook"></i>Bitácora</button>
+      <button data-view="declaracion"><i class="ti ti-file-check"></i>Declaración</button>
+      <button data-view="entrenar"><i class="ti ti-target-arrow"></i>Entrenar</button>
+      <button data-view="ajustes"><i class="ti ti-settings"></i>Ajustes</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== NIVEL ===== -->
+<section class="view active" id="v-nivel">
+  <div class="notice n-info"><i class="ti ti-info-circle"></i><div>
+    <b>Quien decide es tu profesor, no esta app.</b> Busca en la guía docente o en el enunciado qué nivel se aplica a esta tarea. Si no lo dice, pregunta antes de empezar: es una pregunta legítima y te ahorra un disgusto.</div></div>
+  <div class="card">
+    <h2><i class="ti ti-stairs"></i>Cinco niveles de uso</h2>
+    <p class="hint">Pulsa el nivel que se aplica a tu tarea para ver qué puedes hacer, qué no, y qué tienes que guardar por si te lo piden.</p>
+    <div id="niveles"></div>
+  </div>
+  <div class="card">
+    <h2><i class="ti ti-shield-lock"></i>Tres cosas que no dependen del nivel</h2>
+    <div class="lv-col no"><b>Nunca</b><ul>
+      <li>Pegues datos personales de nadie: pacientes, encuestados, compañeros, menores. Ni con las iniciales.</li>
+      <li>Subas material inédito de otra persona: el borrador de un compañero, datos de un grupo de investigación, un examen.</li>
+      <li>Cites algo que no has abierto y leído. El modelo te da la referencia; leerla es cosa tuya.</li>
+    </ul></div>
+    <div class="lv-col ev"><b>Siempre</b><ul>
+      <li>Tú respondes de lo que entregas. «Lo dijo la IA» no es una defensa ante un tribunal de TFG.</li>
+      <li>Si la herramienta se equivoca y tú no lo detectas, el error es tuyo.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ===== VERIFICAR ===== -->
+<section class="view" id="v-verificar">
+  <div class="card">
+    <h2><i class="ti ti-search"></i>¿Existen estas referencias?</h2>
+    <p class="hint">Pega la bibliografía que te ha dado un modelo de lenguaje, una por línea. Se consulta Crossref en directo para ver si cada trabajo existe y si los datos coinciden. No necesitas clave de API ni cuenta de nada.</p>
+    <textarea id="refIn" rows="7" placeholder="García, M. y López, J. (2021). Efectos del entrenamiento intervalado en adultos mayores. Revista Española de Geriatría, 56(3), 145-152. https://doi.org/10.1016/j.regg.2021.03.004
+Smith, A. (2019). Deep learning for medical triage. Nature Medicine, 25, 1120-1127."></textarea>
+    <div class="row" style="margin-top:12px">
+      <button class="btn btn-primary" id="doCheck"><i class="ti ti-list-search"></i>Comprobar</button>
+      <button class="btn btn-ghost btn-sm" id="loadDemo"><i class="ti ti-flask"></i>Probar con un ejemplo</button>
+      <span class="spacer"></span>
+      <button class="btn btn-ghost btn-sm" id="expRefs" style="display:none"><i class="ti ti-download"></i>Descargar informe</button>
+    </div>
+  </div>
+  <div id="refResumen"></div>
+  <div id="refList"></div>
+</section>
+
+<!-- ===== BITÁCORA ===== -->
+<section class="view" id="v-bitacora">
+  <div class="card">
+    <h2><i class="ti ti-notebook"></i>Qué le pediste y qué hiciste con la respuesta</h2>
+    <p class="hint">Cada vez que uses IA en el trabajo, anótalo aquí en treinta segundos. Cuando llegue la entrega tendrás el anexo hecho, y si alguien te pregunta cómo llegaste a algo, tendrás la respuesta.</p>
+    <div class="grid g2">
+      <div><label>Herramienta</label><input type="text" id="bTool" placeholder="ChatGPT, Claude, Copilot, DeepL..."></div>
+      <div><label>Para qué la usaste</label><select id="bUso"></select></div>
+    </div>
+    <div style="margin-top:12px"><label>Qué le pediste</label><textarea id="bPrompt" rows="2" placeholder="Resume estos tres artículos y dime en qué se contradicen"></textarea></div>
+    <div style="margin-top:12px"><label>Qué hiciste con lo que te devolvió</label><textarea id="bAccion" rows="2" placeholder="Me sirvió para ordenar el apartado 3. Reescribí todo con mis palabras y comprobé las dos referencias que citaba: una no existía."></textarea></div>
+    <div class="row" style="margin-top:12px">
+      <label style="font-weight:400;font-size:.83rem;margin:0"><input type="checkbox" id="bVerif" style="width:auto;margin-right:7px">Verifiqué lo que me devolvió</label>
+      <span class="spacer"></span>
+      <button class="btn btn-primary" id="bAdd"><i class="ti ti-plus"></i>Anotar</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="row" style="margin-bottom:12px"><h2 style="margin:0"><i class="ti ti-list"></i>Entradas</h2><span class="spacer"></span>
+      <button class="btn btn-ghost btn-sm" id="bExp"><i class="ti ti-download"></i>Exportar anexo</button></div>
+    <div id="bList"></div>
+  </div>
+</section>
+
+<!-- ===== DECLARACIÓN ===== -->
+<section class="view" id="v-declaracion">
+  <div class="card">
+    <h2><i class="ti ti-file-check"></i>El párrafo que va en tu trabajo</h2>
+    <p class="hint">Se redacta a partir del nivel que has elegido y de tu bitácora. Declarar el uso no te penaliza: ocultarlo sí. Comprueba el formato que pide tu universidad antes de pegarlo.</p>
+    <div class="grid g2">
+      <div><label>Dónde va</label><select id="dLugar">
+        <option>Apartado de metodología</option><option>Anexo de declaración de uso de IA</option>
+        <option>Nota al inicio del trabajo</option><option>Apartado de agradecimientos</option></select></div>
+      <div><label>Estilo</label><select id="dEstilo">
+        <option value="breve">Breve — dos o tres frases</option>
+        <option value="detallado">Detallado — con usos concretos</option>
+        <option value="tabla">Detallado + tabla de usos</option></select></div>
+    </div>
+    <div class="row" style="margin-top:13px">
+      <button class="btn btn-primary" id="dGen"><i class="ti ti-writing"></i>Redactar</button>
+      <button class="btn btn-ghost" id="dCopy"><i class="ti ti-copy"></i>Copiar</button>
+    </div>
+  </div>
+  <div class="card"><div class="out" id="dOut">Pulsa «Redactar» para generar el texto.</div></div>
+</section>
+
+<!-- ===== ENTRENAR ===== -->
+<section class="view" id="v-entrenar">
+  <div class="card">
+    <h2><i class="ti ti-target-arrow"></i>Catorce situaciones reales</h2>
+    <p class="hint">Casos que se dan en clase todos los cursos. No hay trampa ni pregunta capciosa: se trata de que reconozcas la situación cuando te pase a ti. Funciona sin conexión a ninguna IA.</p>
+    <div class="prog"><i id="qProg" style="width:0%"></i></div>
+    <div id="quiz"></div>
+  </div>
+</section>
+
+<!-- ===== AJUSTES ===== -->
+<section class="view" id="v-ajustes">
+  <div class="card">
+    <h2><i class="ti ti-user"></i>Tus datos</h2>
+    <p class="hint">Solo se usan para rellenar la declaración. No salen de tu navegador.</p>
+    <div class="grid g2">
+      <div><label>Nombre</label><input type="text" id="cNombre" placeholder="Tu nombre"></div>
+      <div><label>Asignatura o trabajo</label><input type="text" id="cAsig" placeholder="TFG · Grado en Ciencia de Datos e IA"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2><i class="ti ti-key"></i>Clave de OpenAI (opcional)</h2>
+    <p class="hint">La app funciona entera sin clave: los niveles, la verificación de referencias contra Crossref, la bitácora, la declaración y el entrenamiento no la necesitan. Solo sirve para pulir la redacción de la declaración y para el detector de afirmaciones sin respaldo.</p>
+    <div class="grid g2">
+      <div><label>Clave</label><input type="password" id="apiKey" placeholder="sk-..."></div>
+      <div><label>Modelo</label><select id="model">
+        <option value="gpt-4o-mini">gpt-4o-mini</option><option value="gpt-4o">gpt-4o</option>
+        <option value="gpt-4.1-mini">gpt-4.1-mini</option></select></div>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn btn-primary btn-sm" id="saveKey"><i class="ti ti-device-floppy"></i>Guardar</button><span class="help" id="keyState"></span></div>
+  </div>
+  <div class="card">
+    <h2><i class="ti ti-eraser"></i>Borrar</h2>
+    <div class="row"><button class="btn btn-ghost btn-sm" id="expAll"><i class="ti ti-download"></i>Exportar todo</button>
+    <button class="btn btn-danger btn-sm" id="wipe"><i class="ti ti-trash"></i>Borrar mis datos</button></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  CriterIA · Fernando Borrás Rocher · Universidad Miguel Hernández de Elche<br>
+  Material de apoyo. La norma que se aplica a tu trabajo es la de tu universidad y la de tu profesor.
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= NIVELES ================= */
+const NIVELES = [
+ { n:0, t:"Sin IA", s:"La tarea mide algo que la IA haría por ti. Aquí no se usa, ni para empezar.",
+   si:["Buscadores, diccionarios y correctores ortográficos de toda la vida.","Preguntar dudas a tu profesor o a compañeros."],
+   no:["Cualquier modelo de lenguaje, aunque sea «solo para tener una idea».","Traductores automáticos si lo que se evalúa es tu redacción en ese idioma."],
+   ev:["Nada que declarar, porque no has usado nada."], dcl:"" },
+ { n:1, t:"IA para explorar", s:"Puedes usarla antes de escribir. Nada de lo que produzca acaba en el texto.",
+   si:["Entender un concepto que se te atraganta, con tus palabras después.","Sacar posibles enfoques o un esquema de partida.","Preguntarle qué te falta por considerar."],
+   no:["Copiar frases suyas al trabajo, aunque las retoques.","Usar su bibliografía sin haber leído las fuentes."],
+   ev:["Anota en la bitácora qué le preguntaste y qué te llevaste.","Declaración breve: usaste IA en la fase de exploración."],
+   dcl:"las he empleado únicamente en la fase previa de exploración y comprensión del tema, sin que ninguno de sus resultados haya pasado al texto entregado" },
+ { n:2, t:"IA para asistir", s:"Puede ayudarte a redactar y reescribir, pero las ideas y la estructura son tuyas.",
+   si:["Reescribir un párrafo tuyo para que se entienda mejor.","Corregir gramática y estilo.","Resumir un artículo que tú has leído, para tus notas.","Generar ejemplos o preguntas de repaso."],
+   no:["Pedirle un apartado entero desde cero y presentarlo como tuyo.","Dejar sin comprobar una sola cifra, cita o dato que te devuelva."],
+   ev:["Bitácora con los usos concretos.","Guarda las conversaciones por si te las piden.","Declaración con los usos enumerados."],
+   dcl:"las he empleado como apoyo en la redacción y la revisión de un texto cuyas ideas, estructura y argumentación son mías" },
+ { n:3, t:"IA para colaborar", s:"Trabajo conjunto de verdad. Se evalúa el resultado y también cómo lo has dirigido.",
+   si:["Generar borradores que tú criticas, corriges y reescribes.","Analizar datos o escribir código que tú entiendes línea a línea.","Discutir la interpretación de un resultado."],
+   no:["Entregar algo que no sabrías defender oralmente.","Aceptar una salida sin verificarla contra la fuente original."],
+   ev:["Bitácora detallada.","Anexo con las conversaciones o los prompts principales.","Declaración detallada, mejor con tabla de usos."],
+   dcl:"he trabajado con ellas de forma iterativa, generando borradores y análisis que después he criticado, corregido y reescrito" },
+ { n:4, t:"IA integral", s:"El uso es el objeto de la tarea. Lo que se evalúa es tu criterio al supervisarla.",
+   si:["Todo lo anterior, y además documentar cómo has iterado.","Comparar salidas de varias herramientas y justificar cuál eliges.","Señalar dónde se equivocó y cómo lo corregiste."],
+   no:["Hacer de intermediario sin aportar juicio: eso es exactamente lo que se está evaluando.","Ocultar los fallos que encontraste; suelen ser la parte más interesante."],
+   ev:["Bitácora completa, con los intentos fallidos.","Anexo de conversaciones.","Declaración detallada con reflexión sobre limitaciones."],
+   dcl:"su uso forma parte del objeto mismo del trabajo, por lo que documento tanto los resultados obtenidos como el criterio con el que los he supervisado y corregido" }
+];
+const USOS = ["Entender un concepto","Buscar enfoques o estructura","Resumir textos que he leído","Reescribir o mejorar mi redacción",
+  "Corregir gramática y estilo","Traducir","Generar código","Analizar datos","Generar ejemplos o preguntas de repaso",
+  "Buscar bibliografía","Discutir la interpretación de un resultado","Otro"];
+
+/* ================= ESTADO ================= */
+const LS_KEY='ia_openai_key', LS_STATE='criteria_state';
+let S={ nombre:'', asig:'', nivel:null, model:'gpt-4o-mini', log:[], quiz:{i:0,aciertos:0,hechas:[]}, decl:'' };
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function save(){ try{localStorage.setItem(LS_STATE,JSON.stringify(S));}catch(e){} }
+function load(){ try{const r=localStorage.getItem(LS_STATE); if(r) S=Object.assign(S,JSON.parse(r));}catch(e){}
+  if(!Array.isArray(S.log)) S.log=[]; if(!S.quiz) S.quiz={i:0,aciertos:0,hechas:[]}; }
+let tT; function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('on'),3200);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function busy(b,on,t){ if(on){b.dataset.h=b.innerHTML;b.innerHTML='<span class="spin"></span>'+(t||'Trabajando');b.disabled=true;} else {b.innerHTML=b.dataset.h||b.innerHTML;b.disabled=false;} }
+function dl(n,c,t){const b=new Blob([c],{type:t});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(u),700);}
+
+$$('nav button').forEach(b=>b.addEventListener('click',()=>{
+  $$('nav button').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+  $$('.view').forEach(v=>v.classList.remove('active')); $('#v-'+b.dataset.view).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(b.dataset.view==='entrenar') renderQuiz();
+}));
+
+/* ================= NIVELES: render ================= */
+function renderNiveles(){
+  $('#niveles').innerHTML = NIVELES.map(l=>`
+    <div class="lv ${S.nivel===l.n?'on':''}" data-n="${l.n}">
+      <div class="lv-h"><div class="lv-n">${l.n}</div>
+        <div><div class="lv-t">${l.t}</div><div class="lv-s">${esc(l.s)}</div></div></div>
+      <div class="lv-d">
+        <div class="lv-col si"><b>Puedes</b><ul>${l.si.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div class="lv-col no"><b>No puedes</b><ul>${l.no.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div class="lv-col ev"><b>Guarda</b><ul>${l.ev.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+      </div></div>`).join('');
+  $$('#niveles .lv').forEach(el=>el.onclick=()=>{
+    const n=+el.dataset.n; S.nivel = (S.nivel===n?null:n); save(); renderNiveles(); renderHeader();
+  });
+}
+function renderHeader(){ $('#hLv').textContent = S.nivel==null?'—':S.nivel; }
+
+/* ================= VERIFICADOR DE REFERENCIAS ================= */
+const DOI_RE=/10\.\d{4,9}\/[-._;()\/:a-z0-9A-Z]+/;
+function norm(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+const STOP=new Set('de la el los las en y a un una the of and for on in to with an por del al que'.split(' '));
+function toks(s){ return new Set(norm(s).split(' ').filter(w=>w.length>3&&!STOP.has(w))); }
+function solape(a,b){ const A=toks(a),B=toks(b); if(!A.size||!B.size) return 0;
+  let c=0; A.forEach(w=>{ if(B.has(w)) c++; }); return c/Math.min(A.size,B.size); }
+
+function partirRefs(txt){
+  let lines = txt.split(/\n+/).map(l=>l.trim()).filter(l=>l.length>25);
+  if(lines.length<=1){
+    lines = txt.split(/(?<=\.)\s+(?=[A-ZÁÉÍÓÚÑ][a-zá-ú]+,)/).map(l=>l.trim()).filter(l=>l.length>25);
+  }
+  return lines.map(l=>l.replace(/^\s*[\[\(]?\d{1,3}[\]\).]\s*/,'').trim());
+}
+function extraerTitulo(ref){
+  let r = ref.replace(/https?:\/\/\S+/g,'').replace(/doi:\s*\S+/gi,'');
+  const tras = r.split(/\(\d{4}[a-z]?\)\.?\s*/);
+  let cand = tras.length>1 ? tras[1] : r;
+  const partes = cand.split(/\.\s+/).filter(p=>p.trim().length>12);
+  return (partes[0]||cand).trim().slice(0,300);
+}
+
+async function crossrefPorDoi(doi){
+  try{ const r=await fetch('https://api.crossref.org/works/'+encodeURIComponent(doi)); if(!r.ok) return null;
+    return (await r.json()).message; }catch(e){ return null; }
+}
+async function crossrefBusca(ref){
+  try{
+    const u='https://api.crossref.org/works?query.bibliographic='+encodeURIComponent(ref.slice(0,280))+
+            '&rows=3&select=DOI,title,author,issued,container-title,score';
+    const r=await fetch(u); if(!r.ok) return [];
+    return ((await r.json()).message||{}).items||[];
+  }catch(e){ return []; }
+}
+function fmt(it){
+  if(!it) return '';
+  const t=(it.title&&it.title[0])||'(sin título)';
+  const a=(it.author||[]).slice(0,2).map(x=>x.family||x.name||'').filter(Boolean).join(', ');
+  const y=(it.issued&&it.issued['date-parts']&&it.issued['date-parts'][0]&&it.issued['date-parts'][0][0])||'';
+  const c=(it['container-title']&&it['container-title'][0])||'';
+  return `${a}${a?' · ':''}${t}${c?' · '+c:''}${y?' · '+y:''}`;
+}
+
+let RESULTADOS=[];
+async function comprobar(){
+  const txt=$('#refIn').value.trim();
+  if(!txt){ toast('Pega primero la bibliografía'); return; }
+  const refs=partirRefs(txt);
+  if(!refs.length){ toast('No he sabido separar las referencias. Pon una por línea.'); return; }
+  const btn=$('#doCheck'); busy(btn,true,'Comprobando 0/'+refs.length);
+  RESULTADOS=[];
+  $('#refList').innerHTML=''; $('#refResumen').innerHTML='';
+  for(let i=0;i<refs.length;i++){
+    const ref=refs[i];
+    const res={ ref, verdict:'nd', msg:'', found:null, doi:'' };
+    const m=ref.match(DOI_RE);
+    if(m){
+      res.doi=m[0].replace(/[.,;)]+$/,'');
+      const it=await crossrefPorDoi(res.doi);
+      if(!it){ res.verdict='bad'; res.msg='Ese DOI no está registrado en Crossref. Lo más probable es que el modelo se lo haya inventado.'; }
+      else{
+        res.found=it;
+        const sim=solape(extraerTitulo(ref), (it.title&&it.title[0])||'');
+        if(sim>=0.5){ res.verdict='ok'; res.msg='El DOI existe y apunta a este trabajo.'; }
+        else { res.verdict='warn'; res.msg='Cuidado: el DOI existe, pero apunta a un trabajo distinto del que dice la referencia. Es el fallo más típico de las citas inventadas.'; }
+      }
+    } else {
+      const its=await crossrefBusca(ref);
+      const tit=extraerTitulo(ref);
+      let mejor=null, mejorSim=0;
+      its.forEach(it=>{ const s=solape(tit,(it.title&&it.title[0])||''); if(s>mejorSim){mejorSim=s;mejor=it;} });
+      if(mejor && mejorSim>=0.6){ res.verdict='ok'; res.found=mejor; res.doi=mejor.DOI||'';
+        res.msg='Encontrada en Crossref. Comprueba que el año y la revista coinciden con lo que citas.'; }
+      else if(mejor && mejorSim>=0.35){ res.verdict='warn'; res.found=mejor; res.doi=mejor.DOI||'';
+        res.msg='Hay algo parecido, pero no coincide del todo. Ábrelo y decide si es el mismo trabajo.'; }
+      else { res.verdict='bad'; res.msg='No aparece nada parecido en Crossref. O no existe, o no está indexada ahí (pasa con libros, tesis y actas de congreso). Búscala a mano antes de citarla.'; }
+    }
+    RESULTADOS.push(res);
+    btn.innerHTML='<span class="spin"></span>Comprobando '+(i+1)+'/'+refs.length;
+    pintarRefs();
+  }
+  busy(btn,false); $('#expRefs').style.display='inline-flex';
+  registrarQuiz();
+}
+
+function pintarRefs(){
+  const cls={ok:'ok',warn:'warn',bad:'bad',nd:''};
+  const et={ok:['v-ok','ti-circle-check','Existe'],warn:['v-warn','ti-alert-triangle','No coincide'],
+            bad:['v-bad','ti-circle-x','No la encuentro'],nd:['v-nd','ti-help','Sin datos']};
+  $('#refList').innerHTML=RESULTADOS.map(r=>{
+    const [c,ic,tx]=et[r.verdict];
+    return `<div class="ref ${cls[r.verdict]}">
+      <span class="verdict ${c}"><i class="ti ${ic}"></i>${tx}</span>
+      <div class="ref-in">${esc(r.ref)}</div>
+      <div class="ref-out">${esc(r.msg)}${r.found?'<br><b>En Crossref:</b> '+esc(fmt(r.found)):''}
+      ${r.doi?`<br><a href="https://doi.org/${esc(r.doi)}" target="_blank" rel="noopener" style="color:var(--acc)">Abrir ${esc(r.doi)}</a>`:''}</div></div>`;
+  }).join('');
+  const ok=RESULTADOS.filter(r=>r.verdict==='ok').length;
+  const bad=RESULTADOS.filter(r=>r.verdict==='bad').length;
+  const wa=RESULTADOS.filter(r=>r.verdict==='warn').length;
+  $('#refResumen').innerHTML = !RESULTADOS.length?'':
+    (bad||wa ? `<div class="notice n-bad"><i class="ti ti-alert-triangle"></i><div><b>${bad} sin localizar y ${wa} que no cuadran</b>, de ${RESULTADOS.length}. Míralas una a una antes de entregar: cada una es una cita que un tribunal comprueba en diez segundos. Ojo, un libro o una tesis pueden no estar en Crossref y ser perfectamente reales: eso lo decides tú buscándolos.</div></div>`
+     : `<div class="notice n-ok"><i class="ti ti-circle-check"></i><div>Las ${ok} referencias existen y coinciden. Aun así, ábrelas y léelas: que exista no significa que diga lo que tú citas.</div></div>`);
+}
+</script>
+
+<script>
+/* ================= BITÁCORA ================= */
+function renderLog(){
+  if(!S.log.length){ $('#bList').innerHTML='<div class="empty"><i class="ti ti-notebook"></i><p>Todavía no has anotado nada. La primera vez que uses IA en este trabajo, vuelve aquí.</p></div>'; return; }
+  $('#bList').innerHTML=`<table><thead><tr><th>Fecha</th><th>Herramienta</th><th>Uso</th><th>Qué hiciste</th><th></th></tr></thead><tbody>
+    ${S.log.map((e,i)=>`<tr>
+      <td style="white-space:nowrap">${esc(e.fecha)}</td>
+      <td>${esc(e.tool)}</td>
+      <td>${esc(e.uso)}${e.verif?' <span class="verdict v-ok" style="margin:0"><i class="ti ti-check"></i>verificado</span>':''}</td>
+      <td>${esc(e.accion||'—')}${e.prompt?`<br><span style="color:var(--muted);font-size:.76rem">«${esc(e.prompt.slice(0,110))}»</span>`:''}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="delLog(${i})"><i class="ti ti-x"></i></button></td></tr>`).join('')}
+    </tbody></table>`;
+}
+function delLog(i){ S.log.splice(i,1); save(); renderLog(); }
+function addLog(){
+  const tool=$('#bTool').value.trim(), uso=$('#bUso').value;
+  if(!tool){ toast('¿Qué herramienta usaste?'); return; }
+  S.log.push({ fecha:new Date().toLocaleDateString('es-ES'), tool, uso,
+    prompt:$('#bPrompt').value.trim(), accion:$('#bAccion').value.trim(), verif:$('#bVerif').checked });
+  save(); $('#bPrompt').value=''; $('#bAccion').value=''; $('#bVerif').checked=false;
+  renderLog(); toast('Anotado');
+}
+function anexoTexto(){
+  let t=`ANEXO · REGISTRO DE USO DE IA GENERATIVA\n\n${S.nombre||''}\n${S.asig||''}\n`;
+  t+=`Nivel de uso declarado: ${S.nivel==null?'no indicado':NIVELES[S.nivel].n+' — '+NIVELES[S.nivel].t}\n\n`;
+  S.log.forEach((e,i)=>{ t+=`${i+1}. ${e.fecha} · ${e.tool} · ${e.uso}${e.verif?' · verificado':''}\n`;
+    if(e.prompt) t+=`   Petición: ${e.prompt}\n`;
+    if(e.accion) t+=`   Uso dado a la respuesta: ${e.accion}\n`; t+='\n'; });
+  return t;
+}
+
+/* ================= DECLARACIÓN ================= */
+function declaracionTexto(){
+  if(S.nivel==null) return 'Elige primero el nivel de uso en la pestaña «Qué puedo usar».';
+  const L=NIVELES[S.nivel], est=$('#dEstilo').value, lugar=$('#dLugar').value;
+  const usos=[...new Set(S.log.map(e=>e.uso))];
+  const tools=[...new Set(S.log.map(e=>e.tool))];
+  const verif=S.log.filter(e=>e.verif).length;
+  let t='';
+  if(S.nivel===0){
+    t=`Declaro que en la elaboración de este trabajo no he utilizado herramientas de inteligencia artificial generativa.`;
+  } else {
+    t=`Declaro haber utilizado herramientas de inteligencia artificial generativa en la elaboración de este trabajo`;
+    t+= tools.length? ` (${tools.join(', ')})` : '';
+    t+=`, en un uso correspondiente al nivel ${L.n} («${L.t}»): ${L.dcl}.`;
+    if(est!=='breve' && usos.length){
+      t+=`\n\nConcretamente, las he empleado para: ${usos.map(u=>u.toLowerCase()).join('; ')}.`;
+    }
+    t+=`\n\nAsumo la responsabilidad íntegra sobre el contenido entregado. He revisado y verificado la información obtenida por estos medios${verif?`, dejando constancia de ${verif} comprobación${verif>1?'es':''} en el registro de uso adjunto`:''}, y las ideas, la estructura y las conclusiones son de mi autoría.`;
+    if(est==='tabla' && S.log.length){
+      t+=`\n\nRegistro de usos:\n`;
+      t+=`Fecha | Herramienta | Uso | Verificado\n`;
+      S.log.forEach(e=>{ t+=`${e.fecha} | ${e.tool} | ${e.uso} | ${e.verif?'Sí':'No'}\n`; });
+    }
+  }
+  return `[${lugar}]\n\n${t}\n`;
+}
+async function generarDecl(){
+  const btn=$('#dGen'); const base=declaracionTexto();
+  S.decl=base; $('#dOut').textContent=base; save();
+  const key=localStorage.getItem(LS_KEY);
+  if(!key) return;
+  busy(btn,true,'Puliendo');
+  try{
+    const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({ model:S.model||'gpt-4o-mini', temperature:0.3, max_tokens:700,
+        messages:[{role:'system',content:'Eres un corrector de estilo académico en español. Recibes una declaración de uso de IA para un trabajo universitario. Mejora su redacción para que suene natural y formal, en primera persona. No añadas hechos, herramientas, usos ni compromisos que no estén en el original: si algo no consta, no lo inventes. Conserva la tabla si la hay. Devuelve solo el texto.'},
+                  {role:'user',content:base}] }) });
+    if(r.ok){ const j=await r.json(); const t=(j.choices[0].message.content||'').trim();
+      if(t){ S.decl=t; $('#dOut').textContent=t; save(); } }
+  }catch(e){}
+  busy(btn,false);
+}
+
+/* ================= ENTRENAMIENTO ================= */
+const QUIZ=[
+ { q:"Le pides a un modelo bibliografía sobre tu tema y te da ocho referencias con DOI y todo. ¿Qué haces?",
+   o:["Las cito: llevan DOI, así que existen.","Compruebo una a una que existen y las leo antes de citarlas.","Cito solo las que reconozco.","Le pido que confirme que son reales."],
+   r:1, e:"El DOI es lo más fácil de inventar de una referencia falsa, y el modelo confirmará encantado que son reales porque no tiene forma de saberlo. La única salida es comprobarlas contra una base real y leerlas. Es exactamente lo que hace la pestaña de verificación de esta app." },
+ { q:"Vas a analizar las respuestas de una encuesta que has pasado en clase. ¿Puedes pegar el fichero en un chat de IA para que te ayude?",
+   o:["Sí, si borro los nombres.","Sí, son datos de clase, no médicos.","No, salvo que tengas base legal y lo hayas informado a quien respondió.","Sí, si el chat es de pago."],
+   r:2, e:"Quitar el nombre no anonimiza: la combinación de edad, grupo y respuestas suele reidentificar. Los datos que te confían otras personas no son tuyos para subirlos a un servicio de terceros. Trabaja con datos agregados, o pide ayuda con el método sin pegar el fichero." },
+ { q:"El enunciado no dice nada sobre IA. ¿Qué significa?",
+   o:["Que está permitido, porque no lo prohíbe.","Que está prohibido, porque no lo autoriza.","Que hay que preguntar al profesor antes de empezar.","Que da igual mientras no se note."],
+   r:2, e:"El silencio no es permiso ni prohibición: es una laguna, y las lagunas se resuelven preguntando. Un correo de dos líneas antes de empezar te ahorra tener que defender tu interpretación después, cuando ya no tiene arreglo." },
+ { q:"Escribes tú el trabajo entero y luego le pides al modelo que mejore la redacción. ¿Hay que declararlo?",
+   o:["No, las ideas son mías.","No, es como un corrector ortográfico.","Sí: la redacción también es parte de lo que se evalúa.","Solo si cambia mucho el texto."],
+   r:2, e:"Un corrector ortográfico señala errores; un modelo reescribe. Si en tu trabajo se evalúa la expresión escrita —y en casi todos se evalúa— ese uso es relevante y se declara. Declararlo casi nunca penaliza; que se descubra sin declarar, sí." },
+ { q:"El modelo te explica un concepto de estadística de forma clarísima y tú lo entiendes por fin. ¿Puedes usar esa explicación en el trabajo?",
+   o:["Sí, ya la he entendido, así que es mía.","Sí, si cambio las palabras.","Debo verificarla en una fuente citable y escribirla yo.","No puedo usar el concepto para nada."],
+   r:2, e:"Entenderlo es tuyo y es lo importante. Pero una explicación de un modelo no es una fuente citable: puede estar sutilmente mal y no la firma nadie. Localiza el manual o el artículo donde se dice, comprueba que coincide, cítalo y escríbelo con tus palabras." },
+ { q:"Trabajo en grupo. Un compañero ha generado su parte con IA y no lo dice. ¿Qué te afecta a ti?",
+   o:["Nada, cada uno responde de lo suyo.","Todo: en un trabajo conjunto la entrega es de todos.","Solo si el profesor lo detecta.","Depende de si tú también la usaste."],
+   r:1, e:"En una entrega firmada por varios, la responsabilidad es compartida y las consecuencias académicas también. Es incómodo, pero hay que hablarlo dentro del grupo antes de entregar, no después." },
+ { q:"Le pides que te resuma un artículo que no has leído y lo citas a partir del resumen. ¿Problema?",
+   o:["Ninguno, para eso sirven los resúmenes.","Sí: estás citando algo que no has leído.","Solo si el resumen es corto.","Solo si el artículo es de pago."],
+   r:1, e:"Citar es afirmar que ese trabajo dice eso. Si no lo has abierto, estás avalando algo que no has comprobado, y los resúmenes automáticos invierten matices con frecuencia: un «no se encontraron diferencias» se convierte en «se encontraron diferencias» con una facilidad pasmosa." },
+ { q:"Generas código con IA para tu práctica. Funciona y da el resultado esperado. ¿Suficiente?",
+   o:["Sí, el resultado es correcto.","Debo entender cada línea y saber defenderla.","Basta con comentarlo.","Solo si es para nota."],
+   r:1, e:"Que funcione y que sea correcto no es lo mismo: el código puede dar un número plausible por un motivo equivocado. Y si no puedes explicar por qué elegiste ese test o ese bucle, la práctica no ha evaluado nada. Lee, entiende, y si algo no lo entiendes, quítalo o pregunta." },
+ { q:"Un detector de IA marca tu texto, escrito por ti, como generado. ¿Qué haces?",
+   o:["Reescribo hasta que pase el detector.","Aporto tu proceso: borradores, historial, bitácora.","Reconozco que lo usé para acabar antes.","Nada, esos detectores no valen."],
+   r:1, e:"Los detectores tienen falsos positivos, y castigan especialmente a quien escribe de forma clara y estructurada o en un idioma que no es el suyo. Tu defensa no es el detector: es la trazabilidad. El historial de versiones de tu documento y una bitácora son la mejor prueba de autoría que existe." },
+ { q:"El modelo te da un dato con una cifra concreta: «el 34 % de los pacientes». ¿Qué haces antes de ponerlo?",
+   o:["Lo pongo, es un dato concreto.","Le pido la fuente y la cito.","Busco la fuente original, la abro y compruebo la cifra.","Lo redondeo para no comprometerme."],
+   r:2, e:"Que sea concreto es precisamente la señal de alarma: los modelos generan cifras verosímiles con la misma soltura con la que generan frases. Y pedirle la fuente no basta, porque puede inventarla también. Hay que llegar hasta el documento original." },
+ { q:"Usas IA para traducir tu trabajo al inglés en una asignatura donde se evalúa tu inglés.",
+   o:["Es una herramienta más, como el diccionario.","Es sustituir justo lo que se está evaluando.","Vale si luego lo reviso.","Vale si lo declaro."],
+   r:1, e:"La pregunta no es si la herramienta es legítima en general, sino qué mide la tarea. Si lo evaluado es tu competencia en inglés, traducir automáticamente vacía la evaluación de sentido, y declararlo no lo arregla: simplemente documenta que no has hecho la tarea." },
+ { q:"Quieres usar IA para ordenar tus ideas antes de escribir el TFG. Tu tutor no ha dicho nada.",
+   o:["Adelante, es solo para organizarme.","Se lo comento en la próxima tutoría y lo anoto.","Mejor no usarla en absoluto.","Lo uso y lo declaro solo si me lo preguntan."],
+   r:1, e:"Es probablemente el uso más defendible que existe, y aun así se comenta. Un tutor informado te defiende ante el tribunal; un tutor sorprendido en la defensa, no. Además, anotarlo cuesta treinta segundos y te da la declaración hecha." },
+ { q:"El modelo te contradice lo que dijo el profesor en clase. ¿A quién haces caso?",
+   o:["Al modelo, tiene más información.","Al profesor, que pone la nota.","A la fuente que puedas comprobar, y si persiste la duda, preguntas.","A los dos, poniendo las dos versiones."],
+   r:2, e:"Ni por autoridad ni por comodidad: por evidencia. Busca el manual, el artículo o la guía y mira qué dice. Y si sigue sin cuadrar, llevar esa discrepancia a clase es de las mejores preguntas que puedes hacer." },
+ { q:"Terminas el trabajo con ayuda de IA y no sabrías explicar el apartado 4 en una defensa oral.",
+   o:["Lo entrego: la defensa es otro momento.","Lo estudio antes de la defensa.","Lo reescribo hasta que lo entienda, o lo quito.","Lo dejo y espero que no pregunten por ahí."],
+   r:2, e:"Es la regla más simple y la que resume todas las demás: si no puedes defenderlo, no es tuyo. Y no es un problema de honestidad solamente, es que no has aprendido esa parte, que era el motivo de la tarea." }
+];
+function renderQuiz(){
+  const q=S.quiz;
+  $('#qProg').style.width = Math.round(q.i/QUIZ.length*100)+'%';
+  if(q.i>=QUIZ.length){
+    const pct=Math.round(q.aciertos/QUIZ.length*100);
+    $('#quiz').innerHTML=`<div class="notice ${pct>=80?'n-ok':pct>=60?'n-warn':'n-bad'}"><i class="ti ti-flag"></i><div>
+      <b>${q.aciertos} de ${QUIZ.length}.</b> ${pct>=80?'Tienes el criterio bien calibrado. Lo difícil ahora es aplicarlo cuando vas con prisa.':pct>=60?'Vas bien, pero repasa las que fallaste: suelen ser las situaciones que más caro salen.':'Merece la pena repetirlo leyendo las explicaciones con calma. Ninguna de estas situaciones es rara.'}</div></div>
+      <button class="btn btn-primary" onclick="reiniciarQuiz()"><i class="ti ti-refresh"></i>Empezar de nuevo</button>`;
+    return;
+  }
+  const it=QUIZ[q.i], hecha=q.hechas[q.i];
+  $('#quiz').innerHTML=`<div class="eyebrow">Situación ${q.i+1} de ${QUIZ.length}</div>
+    <p style="font-weight:600;font-size:.95rem;margin-bottom:14px;line-height:1.5">${esc(it.q)}</p>
+    ${it.o.map((o,i)=>`<div class="q-opt ${hecha!=null?'locked ':''}${hecha!=null&&i===it.r?'right':''}${hecha!=null&&hecha===i&&i!==it.r?'wrong':''}" data-i="${i}">${esc(o)}</div>`).join('')}
+    ${hecha!=null?`<div class="q-exp">${esc(it.e)}</div>
+      <div class="row" style="margin-top:13px"><button class="btn btn-primary" onclick="siguienteQuiz()">${q.i===QUIZ.length-1?'Ver resultado':'Siguiente'}<i class="ti ti-arrow-right"></i></button></div>`:''}`;
+  if(hecha==null) $$('#quiz .q-opt').forEach(el=>el.onclick=()=>{
+    const i=+el.dataset.i; S.quiz.hechas[S.quiz.i]=i; if(i===it.r) S.quiz.aciertos++;
+    save(); renderQuiz();
+  });
+}
+function siguienteQuiz(){ S.quiz.i++; save(); renderQuiz(); }
+function reiniciarQuiz(){ S.quiz={i:0,aciertos:0,hechas:[]}; save(); renderQuiz(); }
+function registrarQuiz(){}
+
+/* ================= ARRANQUE ================= */
+load();
+$('#bUso').innerHTML=USOS.map(u=>`<option>${u}</option>`).join('');
+$('#cNombre').value=S.nombre; $('#cAsig').value=S.asig; $('#model').value=S.model;
+const k=localStorage.getItem(LS_KEY); if(k){ $('#apiKey').value=k; $('#keyState').textContent='Guardada en este navegador.'; }
+$('#cNombre').oninput=e=>{S.nombre=e.target.value;save();};
+$('#cAsig').oninput=e=>{S.asig=e.target.value;save();};
+$('#model').onchange=e=>{S.model=e.target.value;save();};
+$('#saveKey').onclick=()=>{ const v=$('#apiKey').value.trim();
+  if(!v){ localStorage.removeItem(LS_KEY); $('#keyState').textContent='Borrada.'; return; }
+  localStorage.setItem(LS_KEY,v); $('#keyState').textContent='Guardada en este navegador.'; toast('Clave guardada'); };
+$('#doCheck').onclick=comprobar;
+$('#loadDemo').onclick=()=>{ $('#refIn').value=
+`Page, M. J., McKenzie, J. E., Bossuyt, P. M. y cols. (2021). The PRISMA 2020 statement: an updated guideline for reporting systematic reviews. BMJ, 372, n71. https://doi.org/10.1136/bmj.n71
+Martínez Ruiz, P. y Delgado Sanz, C. (2022). Aprendizaje adaptativo mediado por IA en estudios de grado. Revista Iberoamericana de Educación Superior, 41(2), 88-104. https://doi.org/10.1016/j.riesup.2022.02.011
+Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2ª ed.). Lawrence Erlbaum Associates.`;
+  toast('Ejemplo cargado. Comprueba tú cuál de las tres no existe.'); };
+$('#expRefs').onclick=()=>{
+  let t='INFORME DE VERIFICACIÓN DE REFERENCIAS\n'+new Date().toLocaleString('es-ES')+'\n\n';
+  RESULTADOS.forEach((r,i)=>{ t+=`${i+1}. [${r.verdict==='ok'?'EXISTE':r.verdict==='warn'?'NO COINCIDE':'NO LOCALIZADA'}] ${r.ref}\n   ${r.msg}\n`;
+    if(r.found) t+=`   En Crossref: ${fmt(r.found)}\n`; t+='\n'; });
+  dl('verificacion-referencias.txt',t,'text/plain'); };
+$('#bAdd').onclick=addLog;
+$('#bExp').onclick=()=>dl('anexo-uso-ia.txt',anexoTexto(),'text/plain');
+$('#dGen').onclick=generarDecl;
+$('#dCopy').onclick=()=>navigator.clipboard.writeText($('#dOut').textContent).then(()=>toast('Copiado'),()=>toast('No se ha podido copiar'));
+$('#expAll').onclick=()=>dl('criteria-datos.json',JSON.stringify(S,null,1),'application/json');
+$('#wipe').onclick=()=>{ if(!confirm('Se borrarán tu bitácora y tu progreso. ¿Seguro?')) return;
+  localStorage.removeItem(LS_STATE); S={nombre:'',asig:'',nivel:null,model:'gpt-4o-mini',log:[],quiz:{i:0,aciertos:0,hechas:[]},decl:''};
+  $('#cNombre').value='';$('#cAsig').value='';renderNiveles();renderLog();renderHeader();renderQuiz();toast('Borrado'); };
+renderNiveles(); renderLog(); renderHeader();
+if(S.decl) $('#dOut').textContent=S.decl;
+</script>
+</body>
+</html>
