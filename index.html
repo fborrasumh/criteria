@@ -58,302 +58,755 @@
   };
 })();
 </script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CriterIA · Usar IA en tus trabajos con criterio</title>
-<meta name="description" content="Alfabetización en IA generativa para estudiantes universitarios: qué uso está permitido en cada tarea, cómo comprobar si las referencias existen de verdad, cómo llevar la bitácora de uso y cómo declararlo en un trabajo. Universidad Miguel Hernández de Elche.">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<title>CriterIA · Declara tu uso de la IA con criterio</title>
+<meta name="description" content="Sabe qué nivel de uso de IA permite tu tarea, anota lo que haces, verifica tus referencias y genera la declaración de uso de IA para tu trabajo universitario.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f7f7f5; --surface:#fff; --border:#e4e3df; --border-strong:#cccbc6;
-  --text:#1a1916; --muted:#7a7872;
-  --acc:#1a4fd8; --acc-soft:#eef2fd; --acc-dark:#1440b0;
-  --ok:#126649; --ok-soft:#eaf3ef;
-  --bad:#b83a0c; --bad-soft:#fdf0ea;
-  --warn:#8a6d05; --warn-soft:#fdf6e0;
-  --radius:8px; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --tinta:#0F2237; --acero:#2E4B6B; --acero-claro:#7C93AC; --gris:#5D7691;
+  --papel:#F3F6FA; --blanco:#FFFFFF; --linea:#D8E0E9; --linea-2:#E8EEF4;
+  --brasa:#E4572E; --brasa-osc:#C9441F; --brasa-suave:#FDEBE4;
+  --forjado:#0E7C6B; --forjado-suave:#E0F3EE; --aviso:#8A3617;
+  --c-ctx:#1F6FB2; --c-comp:#6B4FD8; --c-rda:#0E8C7A; --c-tema:#C98200; --c-eval:#E4572E; --c-final:#2E4B6B;
+  --sombra:0 1px 0 rgba(15,34,55,.05), 0 14px 34px -22px rgba(15,34,55,.45);
+  --sombra-alta:0 2px 0 rgba(15,34,55,.04), 0 22px 50px -24px rgba(15,34,55,.55);
+  --r:14px;
+  --display:"Bricolage Grotesque",Georgia,serif;
+  --texto:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
 }
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);font-family:var(--texto);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:84px}
+a{color:var(--acero)}
+:focus-visible{outline:3px solid var(--brasa);outline-offset:2px;border-radius:6px}
+.hidden{display:none!important}
+svg.i{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+code{font-family:var(--mono);font-size:.85em;background:var(--linea-2);padding:1px 5px;border-radius:5px}
 
-header{background:#1a1916;color:#fff;padding:26px 24px 0}
-.hwrap{max-width:1060px;margin:0 auto}
-.htop{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
-.brand h1{font-family:'Sora',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.025em;line-height:1.1}
-.brand h1 span{color:#7d9fff}
-.brand p{color:#96948e;font-size:.85rem;margin-top:5px;max-width:540px}
-.hlevel{text-align:right}
-.hlevel b{font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:800;display:block;color:#7d9fff;line-height:1}
-.hlevel small{font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:#75736e}
-nav{display:flex;gap:2px;margin-top:22px;overflow-x:auto;scrollbar-width:none}
-nav::-webkit-scrollbar{display:none}
-nav button{background:transparent;border:0;border-bottom:2px solid transparent;color:#8d8b85;font:600 .82rem/1 'Inter',sans-serif;padding:12px 15px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:7px;transition:color .15s,border-color .15s}
-nav button:hover{color:#ddd}
-nav button.active{color:#fff;border-bottom-color:#7d9fff}
-nav button i{font-size:1rem}
+/* Barra superior */
+.topbar{position:sticky;top:0;z-index:40;background:var(--tinta);color:#EAF1F7;box-shadow:0 6px 24px -14px rgba(0,0,0,.6)}
+.tb-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.logo{background:none;border:0;color:#fff;font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:-.03em;cursor:pointer;padding:2px 4px;display:flex;align-items:center;gap:8px}
+.logo em{font-style:normal;color:var(--brasa)}
+.logo .anv{width:30px;height:30px;border-radius:9px;background:var(--brasa);display:grid;place-items:center;color:#fff}
+.stepper{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
+.sdot{display:flex;align-items:center;gap:7px;background:none;border:0;color:#8FA7BE;font:600 13px var(--texto);padding:6px;cursor:pointer;border-radius:10px;white-space:nowrap}
+.sdot:disabled{cursor:not-allowed;opacity:.45}
+.sdot .n{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:2px solid #3E5C7D;font-size:12px;color:#A9C0D4;transition:all .2s}
+.sdot .n svg{width:14px;height:14px}
+.sdot[data-state="done"] .n{background:var(--forjado);border-color:var(--forjado);color:#fff}
+.sdot[data-state="now"]{color:#fff}
+.sdot[data-state="now"] .n{background:var(--brasa);border-color:var(--brasa);color:#fff;box-shadow:0 0 0 4px rgba(228,87,46,.25)}
+.sdot:not(:disabled):hover{background:rgba(255,255,255,.06)}
+.sline{flex:0 1 26px;height:2px;background:#2F4A68;min-width:6px}
+.sline.on{background:var(--forjado)}
+.tb-tools{display:flex;gap:6px}
+.tb-btn{background:transparent;border:1px solid #3E5C7D;color:#C9D8E6;border-radius:9px;padding:6px 10px;font:600 13px var(--texto);cursor:pointer;display:flex;align-items:center;gap:6px}
+.tb-btn:hover{border-color:var(--brasa);color:#fff}
+.progress{height:4px;background:#1E3550}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brasa),#F59E0B);transition:width .4s}
+@media(max-width:960px){.sdot .lbl{display:none}.sdot[data-state="now"] .lbl{display:inline}}
+@media(max-width:720px){
+  .tb-in{flex-wrap:wrap;gap:8px}
+  .stepper{order:3;flex-basis:100%;justify-content:space-between}
+  .sdot[data-state="now"] .lbl{display:none}
+  .tb-btn .lbl{display:none}
+}
 
-main{max-width:1060px;margin:0 auto;padding:26px 24px 90px}
-.view{display:none;animation:fade .18s ease}
-.view.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+/* Pantallas */
+main{max-width:1180px;margin:0 auto;padding:26px 16px 40px}
+.screen{display:none}
+.screen.on{display:block}
+@media(prefers-reduced-motion:no-preference){.screen.on{animation:rise .35s cubic-bezier(.2,.7,.3,1) both}@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}}
+.sh{display:flex;gap:18px;align-items:flex-start;margin:4px 0 22px}
+.sh-ico{width:64px;height:64px;border-radius:18px;background:var(--c,var(--brasa));color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 12px 24px -14px var(--c,var(--brasa))}
+.sh-ico svg{width:32px;height:32px}
+.sh-step{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--acero-claro);margin:4px 0}
+.sh h2{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.6vw,38px);letter-spacing:-.025em;line-height:1.05;margin:0 0 6px}
+.sh-lede{margin:0;color:var(--gris);font-size:16.5px;max-width:70ch}
+@media(max-width:600px){.sh-ico{width:48px;height:48px;border-radius:14px}.sh-ico svg{width:24px;height:24px}}
 
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
-.card>h2{font-family:'Sora',sans-serif;font-size:1.02rem;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:8px}
-.card>h2 i{color:var(--acc)}
-.card>p.hint{color:var(--muted);font-size:.83rem;margin-bottom:16px;max-width:74ch}
-.eyebrow{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.card{background:var(--blanco);border:1px solid var(--linea);border-radius:var(--r);box-shadow:var(--sombra);padding:20px;margin-bottom:18px}
+.card h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:0 0 4px;display:flex;align-items:center;gap:9px}
+.card h3 .num{width:26px;height:26px;border-radius:8px;background:var(--tinta);color:#fff;font:700 13px var(--mono);display:grid;place-items:center}
+.card .sub{margin:0 0 14px;color:var(--gris);font-size:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cols{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:20px;align-items:start}
+.sticky{position:sticky;top:96px}
+@media(max-width:900px){.cols{grid-template-columns:1fr}.sticky{position:static}}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
 
-label{display:block;font-size:.73rem;font-weight:600;color:#4d4b46;margin-bottom:5px}
-input[type=text],input[type=password],select,textarea{width:100%;font:400 .87rem/1.45 'Inter',sans-serif;color:var(--text);background:#fdfdfc;border:1px solid var(--border-strong);border-radius:6px;padding:8px 10px;transition:border-color .15s,box-shadow .15s}
-input:focus,select:focus,textarea:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
-textarea{resize:vertical;min-height:90px;font-family:'Inter',sans-serif}
-.grid{display:grid;gap:13px}
-.g2{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
-.g3{grid-template-columns:repeat(auto-fit,minmax(165px,1fr))}
-.help{font-size:.72rem;color:var(--muted);margin-top:4px}
+label,.lab{display:block;font-size:13.5px;font-weight:600;margin:0 0 6px;color:var(--acero)}
+label small,.lab small{font-weight:500;color:var(--acero-claro)}
+input[type=text],input[type=password],input[type=number],textarea,select{width:100%;padding:11px 13px;border:1.5px solid var(--linea);border-radius:10px;font-family:var(--texto);font-size:15px;color:var(--tinta);background:#fff;transition:border-color .15s,box-shadow .15s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--acero-claro);box-shadow:0 0 0 4px rgba(124,147,172,.18)}
+input.bad{border-color:var(--brasa);box-shadow:0 0 0 4px rgba(228,87,46,.15)}
+textarea{resize:vertical;min-height:96px;line-height:1.5}
+input::placeholder,textarea::placeholder{color:#9DB0C2}
+.field{margin-bottom:16px}
+.help{font-size:12.8px;color:var(--gris);margin:6px 0 0}
+.help b{color:var(--acero)}
 
-a.btn{text-decoration:none}
-.btn{font:600 .83rem/1 'Inter',sans-serif;border-radius:6px;padding:9px 15px;cursor:pointer;border:1px solid transparent;display:inline-flex;align-items:center;gap:7px;transition:background .15s,border-color .15s,opacity .15s}
-.btn-primary{background:var(--acc);color:#fff}
-.btn-primary:hover{background:var(--acc-dark)}
-.btn-ghost{background:transparent;color:#3d3b37;border-color:var(--border-strong)}
-.btn-ghost:hover{background:#f0efec}
-.btn-danger{background:transparent;color:var(--bad);border-color:#e8cfc3}
-.btn-danger:hover{background:var(--bad-soft)}
-.btn-sm{font-size:.75rem;padding:6px 11px}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-.spacer{flex:1}
+button{font-family:var(--texto);cursor:pointer}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:11px;font-weight:600;font-size:15px;border:1.5px solid transparent;padding:11px 18px;transition:transform .08s,background .15s,border-color .15s;text-decoration:none;line-height:1.2}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brasa);color:#fff;box-shadow:0 8px 18px -10px var(--brasa)}
+.btn-primary:hover{background:var(--brasa-osc)}
+.btn-big{font-size:17px;padding:14px 24px;border-radius:13px}
+.btn-dark{background:var(--tinta);color:#fff}
+.btn-dark:hover{background:#1c3656}
+.btn-ghost{background:#fff;border-color:var(--linea);color:var(--acero)}
+.btn-ghost:hover{border-color:var(--acero-claro);background:#F7FAFC}
+.btn-ok{background:var(--forjado);color:#fff}
+.btn-ok:hover{background:#0b6457}
+.btn-word{background:#2B579A;color:#fff}
+.btn-word:hover{background:#1e3f7a}
+.btn-sm{padding:7px 12px;font-size:13.5px;border-radius:9px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
-/* niveles */
-.lv{border:1px solid var(--border);border-left:3px solid var(--border-strong);border-radius:var(--radius);padding:15px 17px;margin-bottom:10px;background:var(--surface);cursor:pointer;transition:border-color .15s,background .15s}
-.lv:hover{border-color:var(--acc)}
-.lv.on{border-left-color:var(--acc);background:var(--acc-soft);border-color:#c4d2f7}
-.lv-h{display:flex;gap:13px;align-items:baseline}
-.lv-n{font-family:'Sora',sans-serif;font-weight:800;font-size:1.25rem;color:var(--acc);min-width:26px}
-.lv-t{font-weight:700;font-size:.95rem}
-.lv-s{font-size:.82rem;color:var(--muted);margin-top:2px}
-.lv-d{display:none;margin-top:13px;padding-top:13px;border-top:1px dashed var(--border)}
-.lv.on .lv-d{display:block}
-.lv-col{margin-bottom:11px}
-.lv-col b{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px}
-.lv-col.si b{color:var(--ok)} .lv-col.no b{color:var(--bad)} .lv-col.ev b{color:var(--warn)}
-.lv-col ul{list-style:none;font-size:.84rem}
-.lv-col li{padding-left:17px;position:relative;margin-bottom:3px;line-height:1.5}
-.lv-col li::before{position:absolute;left:0;font-family:'tabler-icons'}
-.lv-col.si li::before{content:'\\ea5e';color:var(--ok)}
-.lv-col.no li::before{content:'\\eb55';color:var(--bad)}
-.lv-col.ev li::before{content:'\\ea06';color:var(--warn)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:#fff;border:1.5px solid var(--linea);border-radius:999px;padding:7px 13px;font-size:13.5px;color:var(--acero);cursor:pointer;display:inline-flex;align-items:center;gap:6px;line-height:1.25;text-align:left}
+.chip:hover{border-color:var(--brasa);color:var(--brasa)}
+.chip[aria-pressed="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
+.chip.mini-ex{font-size:12.5px;padding:4px 10px;border-style:dashed}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1.5px solid var(--linea);background:#fff;border-radius:9px;padding:7px 11px;font-size:13.5px;font-weight:600;color:var(--acero)}
+.seg button:hover{border-color:var(--acero-claro)}
+.seg button[aria-pressed="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
 
-/* referencias */
-.ref{border:1px solid var(--border);border-left:3px solid var(--border-strong);border-radius:6px;padding:12px 14px;margin-bottom:9px;background:var(--surface)}
-.ref.ok{border-left-color:var(--ok)} .ref.bad{border-left-color:var(--bad)} .ref.warn{border-left-color:#c8a415}
-.ref-in{font-size:.82rem;line-height:1.5;color:#3d3b37}
-.ref-out{font-size:.79rem;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);color:var(--muted);line-height:1.5}
-.verdict{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;border-radius:4px;padding:3px 8px;margin-bottom:7px}
-.v-ok{background:var(--ok-soft);color:var(--ok)} .v-bad{background:var(--bad-soft);color:var(--bad)}
-.v-warn{background:var(--warn-soft);color:var(--warn)} .v-nd{background:#f0efec;color:#5c5a55}
+.meto{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.meto button{text-align:left;background:#fff;border:1.5px solid var(--linea);border-radius:12px;padding:10px 12px;color:var(--tinta)}
+.meto button b{display:block;font-size:14px}
+.meto button span{display:block;font-size:12.3px;color:var(--gris);line-height:1.35;margin-top:2px}
+.meto button:hover{border-color:var(--acero-claro)}
+.meto button[aria-pressed="true"]{border-color:var(--tinta);box-shadow:0 0 0 2px var(--tinta);background:var(--papel)}
 
-.notice{border-radius:6px;padding:11px 13px;font-size:.82rem;display:flex;gap:9px;align-items:flex-start;margin-bottom:12px;line-height:1.5}
-.notice i{font-size:1.05rem;flex-shrink:0;margin-top:1px}
-.n-info{background:var(--acc-soft);color:#14389c;border:1px solid #d2ddfa}
-.n-ok{background:var(--ok-soft);color:#0d4d37;border:1px solid #c8e2d7}
-.n-bad{background:var(--bad-soft);color:#8c2d09;border:1px solid #f0d6c8}
-.n-warn{background:var(--warn-soft);color:#6b5404;border:1px solid #eee0b4}
-.n-muted{background:#f2f1ee;color:#54524d;border:1px solid var(--border)}
-.empty{text-align:center;padding:40px 20px;color:var(--muted)}
-.empty i{font-size:2.2rem;color:var(--border-strong);display:block;margin-bottom:10px}
-.empty p{font-size:.87rem;max-width:44ch;margin:0 auto}
+.tip{display:flex;gap:12px;background:#FFF8E6;border:1px solid #F3DDA0;border-radius:12px;padding:13px 15px;font-size:14px;color:#6B4E00;margin-bottom:18px}
+.tip svg{width:22px;height:22px;color:#C98200;flex:none;margin-top:1px}
+.tip strong{color:#523B00}
+.aviso{background:var(--brasa-suave);border:1px solid #F3C7B5;border-radius:12px;padding:13px 15px;font-size:14px;color:var(--aviso);margin-bottom:16px}
+.okbox{background:var(--forjado-suave);border:1px solid #A9DCCF;border-radius:12px;padding:13px 15px;font-size:14px;color:#0B5A4E;margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 
-table{width:100%;border-collapse:collapse;font-size:.82rem}
-th{text-align:left;font-size:.65rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding:0 9px 8px 0;font-weight:700;border-bottom:1px solid var(--border)}
-td{padding:9px 9px 9px 0;border-bottom:1px solid #f2f1ee;vertical-align:top}
+/* Inicio */
+.hero{background:var(--tinta);color:#EAF1F7;border-radius:22px;padding:40px 36px;position:relative;overflow:hidden;margin-bottom:26px;box-shadow:var(--sombra-alta)}
+.hero::before{content:"";position:absolute;right:-80px;top:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(228,87,46,.55),transparent 65%)}
+.hero::after{content:"";position:absolute;left:30%;bottom:-140px;width:420px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(14,140,122,.35),transparent 65%)}
+.hero>*{position:relative;z-index:1}
+@media(max-width:600px){.hero{padding:28px 20px;border-radius:18px}}
+.eyebrow{font:600 11.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#8FA7BE;margin:0 0 14px}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,5.4vw,58px);line-height:.98;letter-spacing:-.035em;margin:0 0 16px;max-width:17ch}
+.hero h1 em{font-style:normal;color:var(--brasa)}
+.hero p.lede{max-width:62ch;font-size:18px;color:#C3D3E2;margin:0 0 24px}
+.hero .actions .btn-ghost{background:transparent;color:#fff;border-color:#4A6787}
+.hero .actions .btn-ghost:hover{border-color:#fff}
+.draft{margin-top:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14.5px}
+.sec-title{font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:-.02em;margin:34px 0 6px}
+.sec-sub{color:var(--gris);margin:0 0 16px}
+.journey{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.jstop{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:16px;position:relative}
+.jstop .ji{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;background:var(--c);margin-bottom:10px}
+.jstop .ji svg{width:20px;height:20px}
+.jstop b{display:block;font-size:15px;margin-bottom:2px}
+.jstop span{display:block;font-size:13px;color:var(--gris);line-height:1.45}
+.jstop .jn{position:absolute;top:12px;right:14px;font:700 12px var(--mono);color:var(--acero-claro)}
+@media(max-width:900px){.journey{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.journey{grid-template-columns:1fr}}
 
-/* quiz */
-.q-opt{display:block;border:1px solid var(--border-strong);border-radius:6px;padding:11px 13px;margin-bottom:7px;font-size:.86rem;cursor:pointer;background:#fdfdfc;transition:all .13s;line-height:1.45}
-.q-opt:hover{border-color:var(--acc)}
-.q-opt.pick{border-color:var(--acc);background:var(--acc-soft)}
-.q-opt.right{border-color:var(--ok);background:var(--ok-soft)}
-.q-opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
-.q-opt.locked{cursor:default}
-.q-exp{font-size:.83rem;line-height:1.55;background:#fbfbfa;border:1px solid var(--border);border-left:3px solid var(--acc);border-radius:6px;padding:12px 14px;margin-top:10px}
-.prog{height:6px;background:#eceae6;border-radius:3px;overflow:hidden;margin:14px 0}
-.prog i{display:block;height:100%;background:var(--acc);transition:width .35s}
+.parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.part{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--linea);border-radius:12px;padding:12px 14px}
+.part .pi{width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);display:grid;place-items:center;flex:none}
+.part b{display:block;font-size:14.5px}
+.part span{display:block;font-size:12.8px;color:var(--gris);line-height:1.4}
 
-.out{font-size:.87rem;line-height:1.62;white-space:pre-wrap;background:#fbfbfa;border:1px solid var(--border);border-radius:6px;padding:14px;min-height:60px}
-.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
-.btn-ghost .spin{border-color:rgba(0,0,0,.15);border-top-color:#3d3b37}
+.examples{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.excard{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--sombra);position:relative;overflow:hidden;text-align:left;font:inherit;color:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.excard:hover{transform:translateY(-3px);box-shadow:var(--sombra-alta)}
+.excard::before{content:"";position:absolute;left:0;top:0;right:0;height:5px;background:var(--c)}
+.excard .emo{font-size:32px;line-height:1}
+.excard .area{font:700 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--acero-claro)}
+.excard b{font-family:var(--display);font-size:18px;letter-spacing:-.01em;line-height:1.15}
+.excard p{margin:0;font-size:13.5px;color:var(--gris);flex:1}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 12%,#fff);border-radius:999px;padding:3px 9px;align-self:flex-start}
+
+/* Clave */
+.keyrow{display:flex;gap:8px}
+.keyrow input{flex:1;font-family:var(--mono);font-size:14px}
+.eye{width:46px;flex:none;border:1.5px solid var(--linea);background:#fff;border-radius:10px;color:var(--acero);display:grid;place-items:center}
+.light{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--papel);margin-top:14px;font-size:14.5px;font-weight:600}
+.light .bulbo{width:14px;height:14px;border-radius:50%;background:#B8C5D3;box-shadow:0 0 0 4px rgba(184,197,211,.3);flex:none}
+.light[data-s="ok"] .bulbo{background:#16A34A;box-shadow:0 0 0 4px rgba(22,163,74,.22)}
+.light[data-s="err"] .bulbo{background:var(--brasa);box-shadow:0 0 0 4px rgba(228,87,46,.22)}
+.light[data-s="wait"] .bulbo{background:#F59E0B;box-shadow:0 0 0 4px rgba(245,158,11,.25)}
+.olsteps{list-style:none;padding:0;margin:0;counter-reset:o;display:flex;flex-direction:column;gap:12px}
+.olsteps li{counter-increment:o;display:flex;gap:12px;font-size:14.5px;align-items:flex-start}
+.olsteps li::before{content:counter(o);width:28px;height:28px;border-radius:50%;background:var(--brasa-suave);color:var(--brasa);font:700 13px var(--mono);display:grid;place-items:center;flex:none}
+
+/* Acordeones */
+.acc{background:#fff;border:1px solid var(--linea);border-radius:var(--r);margin-bottom:12px;box-shadow:var(--sombra);overflow:hidden}
+.acc>summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;align-items:center;gap:12px}
+.acc>summary::-webkit-details-marker{display:none}
+.acc>summary .ai{width:36px;height:36px;border-radius:10px;background:var(--papel);color:var(--acero);display:grid;place-items:center;flex:none}
+.acc[open]>summary .ai{background:var(--tinta);color:#fff}
+.acc>summary b{font-family:var(--display);font-size:17px;display:block}
+.acc>summary small{display:block;color:var(--gris);font-size:13px}
+.acc>summary .chev{margin-left:auto;transition:transform .2s;color:var(--acero-claro)}
+.acc[open]>summary .chev{transform:rotate(180deg)}
+.acc .inner{padding:4px 18px 18px;border-top:1px solid var(--linea-2)}
+.acc .inner>*:first-child{margin-top:14px}
+.prompt-ta{font-family:var(--mono);font-size:12.3px;min-height:130px;background:#FBFDFE}
+
+/* Resumen lateral */
+.sum h3{margin-bottom:10px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat{background:var(--papel);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font:800 24px var(--display);letter-spacing:-.02em;line-height:1.1}
+.stat span{font-size:12.3px;color:var(--gris)}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.checks li{display:flex;gap:9px;align-items:center;color:var(--gris)}
+.checks li .ck{width:20px;height:20px;border-radius:50%;border:2px solid var(--linea);display:grid;place-items:center;flex:none}
+.checks li.on{color:var(--tinta)}
+.checks li.on .ck{background:var(--forjado);border-color:var(--forjado);color:#fff}
+.checks li .ck svg{width:12px;height:12px}
+.docname{margin-top:14px;padding:11px 13px;border-radius:11px;background:var(--tinta);color:#C3D3E2;font-size:13.5px}
+.docname b{color:#fff}
+
+/* Generación */
+.agents{display:flex;flex-direction:column;gap:10px}
+.agent{background:#fff;border:1px solid var(--linea);border-radius:var(--r);box-shadow:var(--sombra);overflow:hidden;transition:border-color .2s}
+.agent-h{display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer}
+.agent .ai{width:42px;height:42px;border-radius:12px;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);display:grid;place-items:center;flex:none;transition:all .2s}
+.agent .ai svg{width:20px;height:20px}
+.agent-t{flex:1;min-width:0}
+.agent-t b{display:block;font-family:var(--display);font-size:16.5px}
+.agent-t span{display:block;font-size:13px;color:var(--gris)}
+.pill{font-size:12.5px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--linea-2);color:var(--gris);white-space:nowrap}
+.agent[data-s="run"]{border-color:#F59E0B}
+.agent[data-s="run"] .ai{background:var(--c);color:#fff;animation:pulse 1s infinite alternate}
+.agent[data-s="run"] .pill{background:#FFF1D6;color:#8A5A00}
+.agent[data-s="ok"] .ai{background:var(--c);color:#fff}
+.agent[data-s="ok"] .pill{background:var(--forjado-suave);color:var(--forjado)}
+.agent[data-s="err"]{border-color:var(--brasa)}
+.agent[data-s="err"] .pill{background:var(--brasa-suave);color:var(--brasa)}
+.agent-b{display:none;padding:4px 18px 16px 72px;font-size:14px;border-top:1px solid var(--linea-2);background:#FBFDFE}
+.agent.open .agent-b{display:block}
+@media(max-width:600px){.agent-b{padding-left:18px}}
+@keyframes pulse{from{transform:scale(1);box-shadow:0 0 0 0 rgba(228,87,46,.5)}to{transform:scale(1.06);box-shadow:0 0 0 10px rgba(228,87,46,0)}}
+.forging{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;background:var(--tinta);color:#fff;margin-bottom:16px}
+.forging .spark{width:44px;height:44px;border-radius:12px;background:var(--brasa);display:grid;place-items:center;flex:none;animation:pulse 1s infinite alternate}
+.forging.done .spark{background:var(--forjado);animation:none}
+.forging.err .spark{animation:none}
+.forging b{font-family:var(--display);font-size:18px;display:block}
+.forging span{font-size:14px;color:#C3D3E2}
+.mini-list{margin:10px 0 0;padding:0;list-style:none}
+.mini-list li{padding:5px 0;border-bottom:1px solid var(--linea-2)}
+.mini-list li:last-child{border-bottom:0}
+.code{display:inline-block;font:700 11px var(--mono);border-radius:5px;padding:1px 6px;margin-right:6px;background:var(--linea-2);color:var(--acero)}
+
+/* Guía */
+.res-head{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.res-head h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin:0;flex:1;min-width:240px;line-height:1.1}
+.doc{background:#fff;border:1px solid var(--linea);border-radius:18px;box-shadow:var(--sombra-alta);padding:40px 44px;max-width:900px;margin:0 auto}
+@media(max-width:700px){.doc{padding:22px 16px}}
+.doc-h{border-bottom:3px solid var(--tinta);padding-bottom:18px;margin-bottom:26px}
+.doc-kind{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--brasa);margin:0 0 6px}
+.doc-h h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.4vw,36px);letter-spacing:-.025em;line-height:1.05;margin:0 0 12px}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.meta span{font-size:12.8px;font-weight:600;background:var(--papel);color:var(--acero);border-radius:999px;padding:4px 11px}
+.dsec{margin-bottom:28px}
+.dsec h2{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.01em;margin:0 0 10px;display:flex;align-items:center;gap:10px}
+.dsec h2 .num{width:28px;height:28px;border-radius:8px;background:var(--tinta);color:#fff;font:700 13px var(--mono);display:grid;place-items:center;flex:none}
+.dsec p{margin:0 0 10px;max-width:75ch}
+.sublab{font-size:13px;font-weight:700;color:var(--acero-claro);margin:14px 0 6px}
+.row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--linea-2);font-size:14.5px;align-items:flex-start}
+.row:last-child{border-bottom:0}
+.row .code{margin-top:2px;flex:none}
+.code.cg{background:#E6F0FA;color:var(--c-ctx)}
+.code.ce{background:#EEEAFB;color:var(--c-comp)}
+.code.bl{background:var(--forjado-suave);color:var(--forjado)}
+.code.tm{background:var(--tinta);color:#fff}
+.row .hrs{margin-left:auto;font-size:12.5px;color:var(--gris);white-space:nowrap}
+.blk{font-weight:700;margin:16px 0 4px;display:flex;gap:8px;align-items:baseline}
+.blk small{font-weight:500;color:var(--gris)}
+.tbl-wrap{overflow-x:auto}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{background:var(--tinta);color:#fff;text-align:left;padding:9px 11px;font-size:12.5px;font-weight:700}
+table.t td{padding:9px 11px;border-bottom:1px solid var(--linea-2);vertical-align:top}
+table.t tr:nth-child(even) td{background:#FAFCFE}
+.peso{font-weight:800;color:var(--brasa);white-space:nowrap}
+.note{margin-top:12px;padding:11px 14px;background:var(--papel);border-left:4px solid var(--forjado);border-radius:8px;font-size:14px}
+.demo-flag{background:#FFF8E6;border:1px solid #F3DDA0;color:#6B4E00;border-radius:12px;padding:11px 15px;font-size:14px;margin:0 auto 16px;max-width:900px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.demo-flag svg{color:#C98200}
+
+/* Navegación inferior */
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:35;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--linea)}
+.bn-in{max-width:1180px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.bn-hint{flex:1;text-align:center;font-size:14px;color:var(--gris)}
+.bn-hint b{color:var(--tinta)}
+@media(max-width:600px){.bn-hint{display:none}.bn-in{justify-content:space-between}}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(15,34,55,.55);display:none;align-items:flex-start;justify-content:center;padding:6vh 16px;overflow:auto}
+.modal.on{display:flex}
+.modal-box{background:#fff;border-radius:18px;max-width:760px;width:100%;box-shadow:var(--sombra-alta);overflow:hidden}
+.modal-head{display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--tinta);color:#fff}
+.modal-head h2{font-family:var(--display);font-size:22px;margin:0;flex:1}
+.modal-head button{background:transparent;border:1px solid #4A6787;color:#fff;border-radius:9px;padding:6px 10px}
+.modal-body{padding:18px 20px 22px}
+.glos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.glos{grid-template-columns:1fr}}
+.glos div{background:var(--papel);border-radius:12px;padding:12px 14px}
+.glos b{display:block;font-family:var(--display);font-size:16px;margin-bottom:2px}
+.glos span{font-size:13.8px;color:var(--acero)}
+.hist{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--linea);border-radius:12px;margin-bottom:8px}
+.hist-t{flex:1;min-width:0;cursor:pointer}
+.hist-t b{display:block;font-size:15px}
+.hist-t span{font-size:12.8px;color:var(--gris)}
+.hist:hover{border-color:var(--acero-claro)}
+.iconbtn{width:34px;height:34px;border-radius:9px;border:1.5px solid var(--linea);background:#fff;color:var(--acero);display:grid;place-items:center;padding:0}
+.iconbtn:hover{border-color:var(--brasa);color:var(--brasa)}
+.empty{text-align:center;color:var(--gris);padding:30px 10px}
+
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:var(--tinta);color:#fff;padding:11px 18px;border-radius:12px;font-size:14.5px;font-weight:600;opacity:0;pointer-events:none;transition:all .25s;z-index:70;max-width:90vw;text-align:center;box-shadow:var(--sombra-alta)}
+.toast.on{opacity:1;transform:translateX(-50%)}
+footer{max-width:1180px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:#6E8299}
+footer hr{border:0;border-top:1px solid var(--linea);margin:0 0 14px}
+
+@media print{
+  body{background:#fff;padding:0}
+  .topbar,.bottomnav,.res-head,.demo-flag,.okbox,footer,.toast,.modal{display:none!important}
+  main{padding:0;max-width:none}
+  .screen{display:none!important}
+  
+  .doc{box-shadow:none;border:0;padding:0;max-width:none}
+  .dsec{break-inside:avoid-page}
+  table.t th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+/* ══ v2 ══ */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:640px){.grid3{grid-template-columns:1fr}}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:960px){.feats{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.feats{grid-template-columns:1fr}}
+.feat{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:16px;border-top:4px solid var(--c)}
+.feat .pi{width:38px;height:38px;border-radius:11px;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);display:grid;place-items:center;margin-bottom:10px}
+.feat b{display:block;font-family:var(--display);font-size:17px;margin-bottom:3px}
+.feat span{display:block;font-size:13.5px;color:var(--gris);line-height:1.45}
+.importbar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--tinta);color:#EAF1F7;border-radius:var(--r);padding:14px 16px;margin-bottom:18px}
+.importbar .pi{width:40px;height:40px;border-radius:11px;background:var(--brasa);display:grid;place-items:center;flex:none}
+.importbar b{display:block;font-size:15px}
+.importbar span{display:block;font-size:13.3px;color:#A9C0D4}
+.importbar .btn-dark{background:#fff;color:var(--tinta)}
+.importbar .btn-dark:hover{background:#EAF1F7}
+.inacc{border-top:1px solid var(--linea-2);margin-top:4px;padding-top:12px}
+.inacc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--acero)}
+.inacc>summary::-webkit-details-marker{display:none}
+.inacc>summary .chev{margin-left:auto;transition:transform .2s;color:var(--acero-claro)}
+.inacc[open]>summary .chev{transform:rotate(180deg)}
+.rec{display:inline-block;font:700 11px var(--texto);background:var(--forjado-suave);color:var(--forjado);border-radius:999px;padding:2px 8px;vertical-align:2px;margin-left:4px}
+.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:560px){.checkgrid{grid-template-columns:1fr}}
+.checkgrid label{display:flex;gap:9px;align-items:center;margin:0;padding:9px 11px;border-radius:10px;background:var(--papel);font-weight:500;color:var(--tinta);cursor:pointer;font-size:14px}
+.checkgrid input{width:18px;height:18px;accent-color:var(--forjado);margin:0}
+.checkgrid label:has(input:checked){background:var(--forjado-suave)}
+.drop{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:2px dashed var(--linea);border-radius:14px;padding:24px;cursor:pointer;color:var(--acero);margin:0;font-weight:500}
+.drop svg{width:30px;height:30px;color:var(--brasa)}
+.drop b{font-size:15px;color:var(--tinta)}
+.drop span{font-size:13px;color:var(--gris)}
+.drop.over,.drop:hover{border-color:var(--brasa);background:var(--brasa-suave)}
+
+
+
+/* ══ CriterIA ══ */
+.lvs{display:flex;flex-direction:column;gap:10px}
+.lv{background:#fff;border:2px solid var(--linea);border-radius:16px;padding:14px 16px;cursor:pointer;box-shadow:var(--sombra)}
+.lv:hover{border-color:var(--acero-claro)}
+.lv.on{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,transparent)}
+.lv-h{display:flex;gap:14px;align-items:center}
+.lv-n{width:44px;height:44px;border-radius:12px;background:var(--c);color:#fff;display:grid;place-items:center;font:800 20px var(--display);flex:none}
+.lv-t{font-family:var(--display);font-weight:700;font-size:18px}
+.lv-s{font-size:14px;color:var(--gris)}
+.lv-d{display:none;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.lv.on .lv-d{display:grid}
+@media(max-width:760px){.lv-d{grid-template-columns:1fr}}
+.lv-col{border-radius:10px;padding:10px 12px;font-size:13.5px}
+.lv-col b{display:block;margin-bottom:4px}
+.lv-col ul{margin:0;padding-left:18px}
+.lv-col.si{background:var(--forjado-suave)}.lv-col.no{background:var(--brasa-suave)}.lv-col.ev{background:var(--papel)}
+.nivpill{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;border-radius:999px;padding:4px 11px;background:var(--papel);color:var(--acero)}
+.nivpill i{width:18px;height:18px;border-radius:5px;display:inline-grid;place-items:center;color:#fff;font:800 11px var(--mono);font-style:normal}
+table.log{width:100%;border-collapse:collapse;font-size:13.5px}
+table.log th{background:var(--tinta);color:#fff;text-align:left;padding:8px 10px;font-size:12px}
+table.log td{padding:9px 10px;border-bottom:1px solid var(--linea-2);vertical-align:top}
+table.log tr.fuera td{background:var(--brasa-suave)}
+table.log small{color:var(--gris)}
+.ref{background:#fff;border:1px solid var(--linea);border-left:4px solid var(--linea);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.ref.ok{border-left-color:var(--forjado)}.ref.warn{border-left-color:#F59E0B}.ref.bad{border-left-color:var(--brasa)}
+.ref-in{font-size:13.5px;margin:6px 0}
+.ref-out{font-size:13px;color:var(--gris)}
+.verdict{display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:800;border-radius:999px;padding:2px 9px}
+.v-ok{background:var(--forjado-suave);color:var(--forjado)}.v-warn{background:#FFF1D6;color:#8A5A00}.v-bad{background:var(--brasa-suave);color:var(--brasa)}.v-nd{background:var(--linea-2);color:var(--gris)}
+.declbox{background:#fff;border:1px solid var(--linea);border-radius:16px;box-shadow:var(--sombra-alta);padding:26px 30px;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.7;white-space:pre-wrap;min-height:120px}
+.cita-tool{font-family:Georgia,serif;font-size:14.5px;padding:8px 0;border-bottom:1px dashed var(--linea)}
+.q-opt{border:1.5px solid var(--linea);border-radius:12px;padding:11px 14px;margin-bottom:8px;cursor:pointer;background:#fff;font-size:15px}
+.q-opt:hover{border-color:var(--acero-claro)}
+.q-opt.locked{cursor:default}.q-opt.right{border-color:var(--forjado);background:var(--forjado-suave);font-weight:600}.q-opt.wrong{border-color:var(--brasa);background:var(--brasa-suave)}
+.q-exp{background:var(--papel);border-radius:12px;padding:12px 14px;font-size:14.5px;margin-top:6px}
+.qbar{height:6px;background:var(--linea-2);border-radius:4px;overflow:hidden;margin-bottom:14px}.qbar i{display:block;height:100%;background:var(--brasa)}
+.nunca{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.nunca{grid-template-columns:1fr}}
+.nunca div{border-radius:14px;padding:14px 16px}
+.nunca .n1{background:var(--brasa-suave)}.nunca .n2{background:var(--forjado-suave)}
+.nunca b{display:block;font-family:var(--display);font-size:17px;margin-bottom:6px}
+.nunca ul{margin:0;padding-left:18px;font-size:14px}
+
+/* ══ AntiConvocatorIA ══ */
+/* ocho pasos: solo se muestra la etiqueta del paso actual */
+.tb-tools{flex:none}
+.stepper{overflow:hidden}
+.sdot .lbl{display:none}.sdot[data-state="now"] .lbl{display:inline}
+.stepper{justify-content:center;min-width:0}
+@media(max-width:720px){.sdot[data-state="now"] .lbl{display:none}.sline{flex:1 1 4px;min-width:2px}.sdot{padding:4px 2px}.sdot .n{width:26px;height:26px}}
+
+:root{--teal:#0E7C6B;--sello:#E4572E}
+.idea{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:960px){.idea{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.idea{grid-template-columns:1fr}}
+.idea div{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:16px}
+.idea b{display:block;font-family:var(--display);font-size:17px;margin-bottom:4px}
+.idea span{font-size:13.8px;color:var(--gris);line-height:1.5;display:block}
+.idea .k{font:700 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--brasa);margin-bottom:8px}
+.idea div.yes{border-color:#A9DCCF;background:var(--forjado-suave)}
+.idea div.yes .k{color:var(--forjado)}
+.quote{margin:22px 0 0;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);font-weight:700;letter-spacing:-.02em;color:#fff}
+.quote span{color:var(--brasa)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 0 16px}
+.metric{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:14px 16px;box-shadow:var(--sombra)}
+.metric-v{font:800 34px var(--display);letter-spacing:-.03em;line-height:1.05;color:var(--tinta)}
+.metric-v.good{color:var(--forjado)} .metric-v.warn{color:var(--brasa)} .metric-v.mid{color:#B7791F}
+.metric-l{font-weight:700;font-size:14px;margin-top:4px}
+.metric-n{font-size:12.8px;color:var(--gris);margin-top:4px;line-height:1.45}
+.substeps{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.substeps span{font-size:12.5px;font-weight:600;border-radius:999px;padding:5px 11px;background:var(--linea-2);color:var(--gris)}
+.substeps span.on{background:#FFF1D6;color:#8A5A00}
+.substeps span.done{background:var(--forjado-suave);color:var(--forjado)}
+.substeps span.fail{background:var(--brasa-suave);color:var(--brasa)}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px}
 @keyframes sp{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);background:#1a1916;color:#fff;font-size:.83rem;padding:11px 19px;border-radius:99px;z-index:90;transition:transform .28s cubic-bezier(.2,.9,.3,1.2);max-width:88vw;text-align:center}
-.toast.on{transform:translateX(-50%) translateY(0)}
-footer{border-top:1px solid var(--border);padding:22px 24px 40px;text-align:center;color:var(--muted);font-size:.76rem;line-height:1.7}
-
-@media(max-width:620px){main{padding:20px 15px 70px}.card{padding:16px}.hlevel{text-align:left}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.heat{border-collapse:separate;border-spacing:3px;font-size:13px;width:100%}
+.heat th{font-size:11.5px;color:var(--gris);font-weight:700;text-align:center;padding:4px;white-space:nowrap}
+.heat th.l,.heat td.l{text-align:left}
+.heat td{text-align:center;border-radius:6px;padding:7px 4px;min-width:34px}
+.heat td.l{padding:6px 8px 6px 0;min-width:170px;font-weight:600}
+.heat td.c0{background:#F3F6FA;color:#B8C5D3}
+.heat td.p{font-weight:800}
+.aband{display:flex;flex-direction:column;gap:6px}
+.aband-row{display:grid;grid-template-columns:minmax(140px,1.2fr) 2fr minmax(150px,1fr);gap:10px;align-items:center;font-size:13.5px}
+.aband-bar{height:10px;background:var(--linea-2);border-radius:6px;overflow:hidden}
+.aband-fill{height:100%;background:var(--brasa);border-radius:6px}
+.aband-n{color:var(--gris);font-size:12.5px}
+@media(max-width:600px){.aband-row{grid-template-columns:1fr}}
+.conv{background:#FBFDFE;border:1.5px solid var(--linea);border-radius:12px;margin-bottom:8px}
+.conv>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 12px;flex-wrap:wrap}
+.conv>summary::-webkit-details-marker{display:none}
+.conv-year{font:700 13px var(--mono);background:var(--tinta);color:#fff;border-radius:7px;padding:3px 9px}
+.conv-meta{font-size:13px;color:var(--gris);flex:1}
+.conv-src{font-size:12px;color:var(--acero-claro);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conv-body{padding:4px 12px 12px}
+.ing{margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.ing div{display:flex;gap:10px;font-size:13px;justify-content:space-between;padding:6px 10px;background:var(--papel);border-radius:8px}
+.ing .ok{color:var(--forjado);font-weight:600}.ing .err{color:var(--brasa);font-weight:600}.ing .warn{color:#B7791F;font-weight:600}
+.bp-scroll{overflow-x:auto}
+table.bp{border-collapse:separate;border-spacing:3px;width:100%;font-size:13.5px}
+table.bp th{font-size:12px;color:var(--gris);font-weight:700;padding:4px;text-align:center;white-space:nowrap}
+table.bp th.l{text-align:left}
+table.bp td.tema{font-weight:600;padding-right:8px;min-width:180px}
+table.bp td.cell{padding:0;min-width:64px}
+.bp-in{position:relative;border-radius:8px;display:flex;align-items:center;justify-content:center;height:40px}
+.bp-in input{width:48px;border:0;background:transparent;text-align:center;font:700 14px var(--texto);color:var(--tinta);padding:6px 0}
+.bp-in input:focus{box-shadow:none;background:rgba(255,255,255,.7);border-radius:6px}
+.bp-in.dark input{color:#fff}
+.bp-in.sel{outline:2.5px solid var(--brasa);outline-offset:-2px}
+.bp-hits{position:absolute;top:-7px;right:-5px;background:var(--brasa);color:#fff;border-radius:999px;font:700 10.5px var(--texto);padding:1px 6px}
+.bp-peso{width:64px!important;padding:8px!important;text-align:center;font-weight:700}
+.deuda{display:inline-block;height:8px;border-radius:4px;background:var(--brasa);vertical-align:1px;margin-right:8px}
+.deuda-0{background:var(--linea)}
+.rowsum{font-size:11.5px;color:var(--gris);text-align:center}
+.rowsum.bad{color:var(--brasa);font-weight:700}
+.legend{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--gris);margin-top:10px}
+.legend-bar{width:90px;height:8px;border-radius:4px;background:linear-gradient(90deg,rgba(14,124,107,.05),rgba(14,124,107,.8))}
+.acta{background:var(--tinta);color:#EAF1F7;border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:var(--sombra-alta);position:relative;overflow:hidden}
+.acta::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(228,87,46,.35),transparent 65%)}
+.acta>*{position:relative;z-index:1}
+.acta h3{font-family:var(--display);font-size:22px;margin:0}
+.acta .sub{font-size:13px;color:#A9C0D4;margin:2px 0 14px}
+.acta dl{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;margin:0;font-size:14px}
+.acta dt{color:#8FA7BE;font-weight:600}
+.acta dd{margin:0;word-break:break-all}
+.acta code{background:#1B3350;color:#9FE3D4;font-size:12.5px}
+@media(max-width:600px){.acta dl{grid-template-columns:1fr}}
+.intentos{margin-top:16px;display:flex;flex-direction:column;gap:6px}
+.intento{display:grid;grid-template-columns:78px 1fr 52px;gap:10px;align-items:center;font-size:12.5px}
+.intento .track{position:relative;height:10px;background:#1E3550;border-radius:6px}
+.intento .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
+.intento .lim{position:absolute;top:-4px;bottom:-4px;width:2px;background:#F5BF4F}
+.intento .exp{position:absolute;top:-4px;bottom:-4px;width:2px;background:#8FA7BE}
+.intento .v{text-align:right;font-weight:700}
+.tagx{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 8px;background:var(--linea-2);color:var(--acero);margin:1px 2px}
+.tagx.t{background:var(--forjado-suave);color:var(--forjado)}
+.tagx.a{background:var(--brasa-suave);color:var(--brasa)}
+.paper{background:#fff;border:1px solid var(--linea);border-radius:18px;box-shadow:var(--sombra-alta);padding:34px 38px;max-width:880px;margin:0 auto}
+@media(max-width:700px){.paper{padding:20px 16px}}
+.paper-head{border-bottom:3px solid var(--tinta);padding-bottom:14px;margin-bottom:16px}
+.paper-head h3{font-family:var(--display);font-size:28px;margin:0 0 4px;letter-spacing:-.02em}
+.paper-head .pm{font-size:13.5px;color:var(--gris)}
+.q{padding:14px 0;border-bottom:1px solid var(--linea-2)}
+.q:last-child{border-bottom:0}
+.q-top{display:flex;gap:10px}
+.q-n{font:800 16px var(--display);flex:none;min-width:24px}
+.q-text{white-space:pre-wrap;flex:1}
+.q-pts{flex:none;font-size:12.5px;color:var(--gris);white-space:nowrap}
+.opts{margin:8px 0 0 34px;display:flex;flex-direction:column;gap:4px;font-size:14.5px}
+.opts .ok{color:var(--forjado);font-weight:700}
+.q-meta{margin:10px 0 0 34px}
+.variantes{margin:10px 0 0 34px;background:var(--papel);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.variantes .vt{font-weight:700;color:var(--acero);margin-bottom:4px;font-size:12.5px}
+.variantes .vi{padding:5px 0;border-top:1px dashed var(--linea)}
+.variantes .vi:first-of-type{border-top:0}
+.crit{margin:8px 0 0 34px;font-size:13.5px;border-left:3px solid var(--forjado);padding:6px 10px;background:var(--forjado-suave);border-radius:0 8px 8px 0}
+.carta{background:#fff;border:1px solid var(--linea);border-radius:18px;box-shadow:var(--sombra-alta);padding:34px 40px;max-width:760px;margin:0 auto;font-size:16.5px;line-height:1.65}
+.carta p{margin:0 0 14px}
+@media(max-width:700px){.carta{padding:22px 18px}}
+.pubbox{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;justify-content:center}
+.stale{background:#FFF8E6;border:1px solid #F3DDA0;color:#6B4E00;border-radius:12px;padding:11px 15px;font-size:14px;margin-bottom:14px}
+.verify-ok{background:var(--forjado-suave);color:#0B5A4E;border-radius:12px;padding:12px 14px;font-weight:600}
+.verify-ko{background:var(--brasa-suave);color:var(--aviso);border-radius:12px;padding:12px 14px;font-weight:600}
+.keyhide{font-family:var(--mono);letter-spacing:.1em}
+@media print{
+  .noprint,.acta .intentos{display:none!important}
+  .screen.on{display:block!important}
+  .paper,.carta{box-shadow:none;border:0;padding:0}
+}
 </style>
 </head>
 <body>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/></symbol>
+  <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></symbol>
+  <symbol id="i-quiz" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8M13 12h8M13 18h8"/></symbol>
+  <symbol id="i-cards" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4M5 17v4M3 19h4"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol>
+  <symbol id="i-form" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M6 14l1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></symbol>
+</svg>
 
-<header>
-  <div class="hwrap">
-    <div class="htop">
-      <div class="brand">
-        <h1>Criter<span>IA</span></h1>
-        <p>Usar inteligencia artificial en tus trabajos sin jugártela: saber qué te permite cada profesor, comprobar que las referencias existen de verdad, dejar constancia de lo que has hecho y declararlo bien.</p>
+<div class="topbar">
+  <div class="tb-in">
+    <button class="logo" id="goHome" type="button" aria-label="Ir al inicio"><span class="anv"><svg class="i"><use href="#i-shield"/></svg></span><span>Criter<em>IA</em></span></button>
+    <nav class="stepper" id="stepper" aria-label="Pasos"></nav>
+    <div class="tb-tools">
+      <span class="nivpill" id="hLv" title="Nivel de uso de tu tarea">Nivel —</span>
+      <button class="tb-btn" id="btnAjustes" type="button"><svg class="i"><use href="#i-sliders"/></svg><span class="lbl">Ajustes</span></button>
+      <button class="tb-btn" id="btnHelp" type="button"><svg class="i"><use href="#i-help"/></svg><span class="lbl">Ayuda</span></button>
+    </div>
+  </div>
+  <div class="progress"><span id="progBar"></span></div>
+</div>
+
+<main id="app">
+<!-- ═════ 0 · INICIO ═════ -->
+<section class="screen" data-step="0">
+  <div class="hero">
+    <p class="eyebrow">Uso responsable de la IA en el aprendizaje universitario · Universidad Miguel Hernández de Elche</p>
+    <h1>Usa la IA en tus trabajos <em>y decláralo bien</em></h1>
+    <p class="lede">Saber qué te permite cada tarea, dejar constancia de lo que haces, comprobar que tus referencias existen y redactar la declaración de uso que va en tu trabajo. Funciona entera sin clave de IA y tus datos no salen de tu navegador.</p>
+    <div class="actions">
+      <button class="btn btn-primary btn-big" id="btnStart" type="button"><svg class="i"><use href="#i-play"/></svg>Preparar mi declaración</button>
+      <button class="btn btn-ghost btn-big" id="btnDemo" type="button"><svg class="i"><use href="#i-eye"/></svg>Ver un ejemplo</button>
+    </div>
+    <p class="quote">Declarar el uso no te penaliza; <span>ocultarlo, sí.</span></p>
+  </div>
+  <div class="okbox hidden" id="linkBanner"></div>
+  <h2 class="sec-title">Cuatro pasos</h2>
+  <div class="journey" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+    <div class="jstop" style="--c:#1F6FB2"><span class="jn">1</span><div class="ji"><svg class="i"><use href="#i-target"/></svg></div><b>Qué puedo usar</b><span>Cinco niveles, de «sin IA» a «IA integral». Lo decide tu profesor, no esta app.</span></div>
+    <div class="jstop" style="--c:#0E8C7A"><span class="jn">2</span><div class="ji"><svg class="i"><use href="#i-pencil"/></svg></div><b>Bitácora</b><span>Treinta segundos cada vez que uses IA. Te avisa si te sales del nivel.</span></div>
+    <div class="jstop" style="--c:#6B4FD8"><span class="jn">3</span><div class="ji"><svg class="i"><use href="#i-book"/></svg></div><b>Referencias</b><span>Comprueba en Crossref y OpenAlex que existen, coinciden y no están retractadas.</span></div>
+    <div class="jstop" style="--c:#E4572E"><span class="jn">4</span><div class="ji"><svg class="i"><use href="#i-doc"/></svg></div><b>Declaración</b><span>El párrafo, la cita de cada herramienta y el anexo, en español, portugués o inglés.</span></div>
+  </div>
+  <h2 class="sec-title">Tres cosas que no dependen del nivel</h2>
+  <div class="nunca">
+    <div class="n1"><b>Nunca</b><ul><li>Pegues datos personales de nadie: pacientes, encuestados, compañeros, menores. Ni con las iniciales.</li><li>Subas material inédito de otra persona: el borrador de un compañero, datos de un grupo de investigación, un examen.</li><li>Cites algo que no has abierto y leído. El modelo te da la referencia; leerla es cosa tuya.</li></ul></div>
+    <div class="n2"><b>Siempre</b><ul><li>Tú respondes de lo que entregas. «Lo dijo la IA» no es una defensa ante un tribunal.</li><li>Si no sabrías defenderlo en voz alta, no es tuyo todavía.</li><li>Ante la duda sobre lo que se permite, pregunta antes de empezar.</li></ul></div>
+  </div>
+  <h2 class="sec-title">¿Eres docente?</h2>
+  <div class="card"><div class="actions" style="justify-content:space-between"><span style="flex:1;min-width:240px">Elige el nivel de uso de tu tarea y comparte un enlace: tu estudiantado abrirá CriterIA con ese nivel ya marcado y el texto listo para tu guía docente o tu enunciado.</span><button class="btn btn-dark btn-sm" id="btnDocente" type="button"><svg class="i"><use href="#i-users"/></svg>Crear el enlace de mi tarea</button></div></div>
+</section>
+
+<!-- ═════ 1 · TU TRABAJO ═════ -->
+<section class="screen" data-step="1">
+  <header class="sh" style="--c:#1F6FB2"><div class="sh-ico"><svg class="i"><use href="#i-pencil"/></svg></div>
+    <div><p class="sh-step">Paso previo</p><h2>Tu trabajo</h2><p class="sh-lede">Solo sirve para rellenar la declaración. Se guarda en este navegador y no sale de él.</p></div></header>
+  <div class="cols">
+    <div class="card">
+      <div class="grid2">
+        <div class="field"><label for="cNombre">Nombre y apellidos</label><input type="text" id="cNombre"></div>
+        <div class="field"><label for="cAsig">Asignatura</label><input type="text" id="cAsig" placeholder="Bioestadística"></div>
+        <div class="field"><label for="cTrabajo">Título del trabajo</label><input type="text" id="cTrabajo" placeholder="Práctica 2: contraste de hipótesis"></div>
+        <div class="field"><label for="cTipo">Tipo de trabajo</label><select id="cTipo"><option>Práctica o actividad</option><option>Ensayo o informe</option><option>Trabajo de Fin de Grado (TFG)</option><option>Trabajo de Fin de Máster (TFM)</option><option>Tesis doctoral</option><option>Proyecto en grupo</option><option>Presentación oral</option></select></div>
+        <div class="field"><label for="cUni">Universidad</label><input type="text" id="cUni" placeholder="Universidad Miguel Hernández de Elche"></div>
+        <div class="field"><label for="cProf">Profesor o profesora</label><input type="text" id="cProf"></div>
       </div>
-      <div class="hlevel"><b id="hLv">—</b><small>Nivel de uso</small></div>
+      <div class="grid2">
+        <div class="field"><label for="cLang">Idioma de la declaración</label><select id="cLang"><option value="es">Español</option><option value="pt">Português</option><option value="en">English</option></select></div>
+        <div class="field"><label for="cNorma">Estilo de cita de las herramientas</label><select id="cNorma"><option value="apa">APA 7</option><option value="vancouver">Vancouver</option><option value="harvard">Harvard</option></select></div>
+      </div>
     </div>
-    <nav>
-      <button data-view="nivel" class="active"><i class="ti ti-stairs"></i>Qué puedo usar</button>
-      <button data-view="verificar"><i class="ti ti-search"></i>Verificar referencias</button>
-      <button data-view="bitacora"><i class="ti ti-notebook"></i>Bitácora</button>
-      <button data-view="declaracion"><i class="ti ti-file-check"></i>Declaración</button>
-      <button data-view="entrenar"><i class="ti ti-target-arrow"></i>Entrenar</button>
-      <button data-view="ajustes"><i class="ti ti-settings"></i>Ajustes</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-
-<!-- ===== NIVEL ===== -->
-<section class="view active" id="v-nivel">
-  <div class="notice n-info"><i class="ti ti-info-circle"></i><div>
-    <b>Quien decide es tu profesor, no esta app.</b> Busca en la guía docente o en el enunciado qué nivel se aplica a esta tarea. Si no lo dice, pregunta antes de empezar: es una pregunta legítima y te ahorra un disgusto.</div></div>
-  <div class="card">
-    <h2><i class="ti ti-stairs"></i>Cinco niveles de uso</h2>
-    <p class="hint">Pulsa el nivel que se aplica a tu tarea para ver qué puedes hacer, qué no, y qué tienes que guardar por si te lo piden.</p>
-    <div id="niveles"></div>
-  </div>
-  <div class="card">
-    <h2><i class="ti ti-shield-lock"></i>Tres cosas que no dependen del nivel</h2>
-    <div class="lv-col no"><b>Nunca</b><ul>
-      <li>Pegues datos personales de nadie: pacientes, encuestados, compañeros, menores. Ni con las iniciales.</li>
-      <li>Subas material inédito de otra persona: el borrador de un compañero, datos de un grupo de investigación, un examen.</li>
-      <li>Cites algo que no has abierto y leído. El modelo te da la referencia; leerla es cosa tuya.</li>
-    </ul></div>
-    <div class="lv-col ev"><b>Siempre</b><ul>
-      <li>Tú respondes de lo que entregas. «Lo dijo la IA» no es una defensa ante un tribunal de TFG.</li>
-      <li>Si la herramienta se equivoca y tú no lo detectas, el error es tuyo.</li>
-    </ul></div>
+    <div class="card sticky"><h3><svg class="i"><use href="#i-bulb"/></svg>Consejo</h3><p class="sub">Antes de empezar, busca en la guía docente, el sílabo o el enunciado qué nivel de uso de IA se permite. Si no lo dice, en el paso siguiente tienes un correo listo para preguntarlo.</p></div>
   </div>
 </section>
 
-<!-- ===== VERIFICAR ===== -->
-<section class="view" id="v-verificar">
-  <div class="card">
-    <h2><i class="ti ti-search"></i>¿Existen estas referencias?</h2>
-    <p class="hint">Pega la bibliografía que te ha dado un modelo de lenguaje, una por línea. Se consulta Crossref en directo para ver si cada trabajo existe y si los datos coinciden. No necesitas clave de API ni cuenta de nada.</p>
-    <textarea id="refIn" rows="7" placeholder="García, M. y López, J. (2021). Efectos del entrenamiento intervalado en adultos mayores. Revista Española de Geriatría, 56(3), 145-152. https://doi.org/10.1016/j.regg.2021.03.004
-Smith, A. (2019). Deep learning for medical triage. Nature Medicine, 25, 1120-1127."></textarea>
-    <div class="row" style="margin-top:12px">
-      <button class="btn btn-primary" id="doCheck"><i class="ti ti-list-search"></i>Comprobar</button>
-      <button class="btn btn-ghost btn-sm" id="loadDemo"><i class="ti ti-flask"></i>Probar con un ejemplo</button>
-      <span class="spacer"></span>
-      <button class="btn btn-ghost btn-sm" id="expRefs" style="display:none"><i class="ti ti-download"></i>Descargar informe</button>
-    </div>
-  </div>
-  <div id="refResumen"></div>
-  <div id="refList"></div>
+<!-- ═════ 2 · NIVEL ═════ -->
+<section class="screen" data-step="2">
+  <header class="sh" style="--c:#0E8C7A"><div class="sh-ico"><svg class="i"><use href="#i-target"/></svg></div>
+    <div><p class="sh-step">Paso 1 de 4</p><h2>Qué puedo usar</h2><p class="sh-lede">Pulsa el nivel que se aplica a tu tarea para ver qué puedes hacer, qué no y qué tienes que guardar. Quien decide es tu profesor.</p></div></header>
+  <div class="lvs" id="niveles"></div>
+  <div class="card" style="margin-top:14px"><div class="actions" style="justify-content:space-between"><span style="flex:1;min-width:220px"><b>¿El enunciado no dice nada?</b> El silencio no es permiso ni prohibición: pregunta antes de empezar.</span><button class="btn btn-ghost btn-sm" id="btnCorreo" type="button"><svg class="i"><use href="#i-doc"/></svg>Redactar el correo a mi profesor</button></div></div>
 </section>
 
-<!-- ===== BITÁCORA ===== -->
-<section class="view" id="v-bitacora">
+<!-- ═════ 3 · BITÁCORA ═════ -->
+<section class="screen" data-step="3">
+  <header class="sh" style="--c:#6B4FD8"><div class="sh-ico"><svg class="i"><use href="#i-pencil"/></svg></div>
+    <div><p class="sh-step">Paso 2 de 4</p><h2>Bitácora de uso</h2><p class="sh-lede">Cada vez que uses IA, anótalo aquí en treinta segundos. Al entregar tendrás el anexo hecho, y si alguien te pregunta cómo llegaste a algo, tendrás la respuesta.</p></div></header>
   <div class="card">
-    <h2><i class="ti ti-notebook"></i>Qué le pediste y qué hiciste con la respuesta</h2>
-    <p class="hint">Cada vez que uses IA en el trabajo, anótalo aquí en treinta segundos. Cuando llegue la entrega tendrás el anexo hecho, y si alguien te pregunta cómo llegaste a algo, tendrás la respuesta.</p>
-    <div class="grid g2">
-      <div><label>Herramienta</label><input type="text" id="bTool" placeholder="ChatGPT, Claude, Copilot, DeepL..."></div>
-      <div><label>Para qué la usaste</label><select id="bUso"></select></div>
+    <h3><span class="num">1</span>Nueva entrada</h3>
+    <div class="grid3">
+      <div class="field"><label for="bTool">Herramienta</label><input type="text" id="bTool" list="toolsList" placeholder="ChatGPT"><datalist id="toolsList"></datalist></div>
+      <div class="field"><label for="bVer">Modelo o versión <small>(opcional)</small></label><input type="text" id="bVer" placeholder="GPT-5, Claude, Gemini 2.5…"></div>
+      <div class="field"><label for="bUso">Para qué la usaste</label><select id="bUso"></select></div>
     </div>
-    <div style="margin-top:12px"><label>Qué le pediste</label><textarea id="bPrompt" rows="2" placeholder="Resume estos tres artículos y dime en qué se contradicen"></textarea></div>
-    <div style="margin-top:12px"><label>Qué hiciste con lo que te devolvió</label><textarea id="bAccion" rows="2" placeholder="Me sirvió para ordenar el apartado 3. Reescribí todo con mis palabras y comprobé las dos referencias que citaba: una no existía."></textarea></div>
-    <div class="row" style="margin-top:12px">
-      <label style="font-weight:400;font-size:.83rem;margin:0"><input type="checkbox" id="bVerif" style="width:auto;margin-right:7px">Verifiqué lo que me devolvió</label>
-      <span class="spacer"></span>
-      <button class="btn btn-primary" id="bAdd"><i class="ti ti-plus"></i>Anotar</button>
+    <div class="grid2">
+      <div class="field"><label for="bPrompt">Qué le pediste</label><textarea id="bPrompt" style="min-height:70px" placeholder="Explícame la diferencia entre error estándar y desviación típica con un ejemplo clínico"></textarea></div>
+      <div class="field"><label for="bAccion">Qué hiciste con lo que te devolvió</label><textarea id="bAccion" style="min-height:70px" placeholder="Lo contrasté con el manual de la asignatura y escribí mi propia explicación"></textarea></div>
     </div>
+    <div class="actions"><label class="checkgrid" style="margin:0"><label style="margin:0"><input type="checkbox" id="bVerif"> Verifiqué lo que me devolvió</label></label><button class="btn btn-primary" id="bAdd" type="button"><svg class="i"><use href="#i-plus"/></svg>Anotar</button></div>
+    <div id="bAviso" style="margin-top:10px"></div>
   </div>
-  <div class="card">
-    <div class="row" style="margin-bottom:12px"><h2 style="margin:0"><i class="ti ti-list"></i>Entradas</h2><span class="spacer"></span>
-      <button class="btn btn-ghost btn-sm" id="bExp"><i class="ti ti-download"></i>Exportar anexo</button></div>
-    <div id="bList"></div>
-  </div>
+  <div class="card"><h3><span class="num">2</span>Entradas</h3><div id="bList"></div><div class="actions" style="margin-top:12px"><button class="btn btn-ghost btn-sm" id="bExp" type="button"><svg class="i"><use href="#i-download"/></svg>Anexo (.md)</button></div></div>
 </section>
 
-<!-- ===== DECLARACIÓN ===== -->
-<section class="view" id="v-declaracion">
+<!-- ═════ 4 · REFERENCIAS ═════ -->
+<section class="screen" data-step="4">
+  <header class="sh" style="--c:#1F6FB2"><div class="sh-ico"><svg class="i"><use href="#i-book"/></svg></div>
+    <div><p class="sh-step">Paso 3 de 4</p><h2>¿Existen tus referencias?</h2><p class="sh-lede">Pega la bibliografía, sobre todo si te la sugirió un modelo de lenguaje. Se consulta Crossref y OpenAlex en directo: si existe, si el DOI apunta a ese trabajo y si está retractada. No necesitas clave.</p></div></header>
   <div class="card">
-    <h2><i class="ti ti-file-check"></i>El párrafo que va en tu trabajo</h2>
-    <p class="hint">Se redacta a partir del nivel que has elegido y de tu bitácora. Declarar el uso no te penaliza: ocultarlo sí. Comprueba el formato que pide tu universidad antes de pegarlo.</p>
-    <div class="grid g2">
-      <div><label>Dónde va</label><select id="dLugar">
-        <option>Apartado de metodología</option><option>Anexo de declaración de uso de IA</option>
-        <option>Nota al inicio del trabajo</option><option>Apartado de agradecimientos</option></select></div>
-      <div><label>Estilo</label><select id="dEstilo">
-        <option value="breve">Breve — dos o tres frases</option>
-        <option value="detallado">Detallado — con usos concretos</option>
-        <option value="tabla">Detallado + tabla de usos</option></select></div>
-    </div>
-    <div class="row" style="margin-top:13px">
-      <button class="btn btn-primary" id="dGen"><i class="ti ti-writing"></i>Redactar</button>
-      <button class="btn btn-ghost" id="dCopy"><i class="ti ti-copy"></i>Copiar</button>
-    </div>
+    <textarea id="refIn" style="min-height:170px" placeholder="Una referencia por línea"></textarea>
+    <div class="actions" style="margin-top:10px"><button class="btn btn-primary" id="doCheck" type="button"><svg class="i"><use href="#i-check"/></svg>Comprobar</button><button class="btn btn-ghost btn-sm" id="loadDemo" type="button">Probar con un ejemplo</button><button class="btn btn-ghost btn-sm hidden" id="expRefs" type="button"><svg class="i"><use href="#i-download"/></svg>Informe</button></div>
   </div>
-  <div class="card"><div class="out" id="dOut">Pulsa «Redactar» para generar el texto.</div></div>
+  <div id="refResumen"></div><div id="refList"></div>
 </section>
 
-<!-- ===== ENTRENAR ===== -->
-<section class="view" id="v-entrenar">
+<!-- ═════ 5 · DECLARACIÓN ═════ -->
+<section class="screen" data-step="5">
+  <header class="sh" style="--c:#E4572E"><div class="sh-ico"><svg class="i"><use href="#i-doc"/></svg></div>
+    <div><p class="sh-step">Paso 4 de 4</p><h2>Tu declaración</h2><p class="sh-lede">Se redacta a partir del nivel y de tu bitácora. Comprueba el formato que pide tu universidad antes de pegarla.</p></div></header>
+  <div id="coherencia"></div>
   <div class="card">
-    <h2><i class="ti ti-target-arrow"></i>Catorce situaciones reales</h2>
-    <p class="hint">Casos que se dan en clase todos los cursos. No hay trampa ni pregunta capciosa: se trata de que reconozcas la situación cuando te pase a ti. Funciona sin conexión a ninguna IA.</p>
-    <div class="prog"><i id="qProg" style="width:0%"></i></div>
-    <div id="quiz"></div>
-  </div>
-</section>
-
-<!-- ===== AJUSTES ===== -->
-<section class="view" id="v-ajustes">
-  <div class="card">
-    <h2><i class="ti ti-user"></i>Tus datos</h2>
-    <p class="hint">Solo se usan para rellenar la declaración. No salen de tu navegador.</p>
-    <div class="grid g2">
-      <div><label>Nombre</label><input type="text" id="cNombre" placeholder="Tu nombre"></div>
-      <div><label>Asignatura o trabajo</label><input type="text" id="cAsig" placeholder="TFG · Grado en Ciencia de Datos e IA"></div>
+    <div class="grid3">
+      <div class="field"><label for="dLugar">Dónde va</label><select id="dLugar"><option>Apartado de metodología</option><option>Anexo de declaración de uso de IA</option><option>Nota al inicio del trabajo</option><option>Apartado de agradecimientos</option></select></div>
+      <div class="field"><label for="dEstilo">Extensión</label><select id="dEstilo"><option value="breve">Breve · dos o tres frases</option><option value="detallado" selected>Detallada · con los usos concretos</option><option value="tabla">Detallada con tabla de usos</option></select></div>
+      <div class="field"><label>&nbsp;</label><button class="btn btn-primary" id="dGen" type="button" style="width:100%;justify-content:center"><svg class="i"><use href="#i-sparkles"/></svg>Redactar</button></div>
     </div>
   </div>
-  <div class="card">
-    <h2><i class="ti ti-key"></i>Clave de OpenAI (opcional)</h2>
-    <p class="hint">La app funciona entera sin clave: los niveles, la verificación de referencias contra Crossref, la bitácora, la declaración y el entrenamiento no la necesitan. Solo sirve para pulir la redacción de la declaración y para el detector de afirmaciones sin respaldo.</p>
-    <div class="grid g2">
-      <div><label>Clave</label><input type="password" id="apiKey" placeholder="sk-..."></div>
-      <div><label>Modelo</label><select id="model">
-        <option value="gpt-6-luna" selected>gpt-6-luna · más capaz y más barato (recomendado)</option><option value="gpt-4o-mini">gpt-4o-mini</option><option value="gpt-4o">gpt-4o</option>
-        <option value="gpt-4.1-mini">gpt-4.1-mini</option></select></div>
-    </div>
-    <div class="row" style="margin-top:12px"><button class="btn btn-primary btn-sm" id="saveKey"><i class="ti ti-device-floppy"></i>Guardar</button><span class="help" id="keyState"></span></div>
-  </div>
-  <div class="card">
-    <h2><i class="ti ti-eraser"></i>Borrar</h2>
-    <div class="row"><button class="btn btn-ghost btn-sm" id="expAll"><i class="ti ti-download"></i>Exportar todo</button>
-    <button class="btn btn-danger btn-sm" id="wipe"><i class="ti ti-trash"></i>Borrar mis datos</button></div>
-  </div>
+  <div class="declbox" id="dOut">Pulsa «Redactar» para generar el texto.</div>
+  <div class="actions" style="margin:12px 0 18px"><button class="btn btn-dark btn-sm" id="dCopy" type="button"><svg class="i"><use href="#i-copy"/></svg>Copiar</button><button class="btn btn-word btn-sm" id="dDocx" type="button"><svg class="i"><use href="#i-download"/></svg>Word con anexo</button><button class="btn btn-ghost btn-sm" id="dMd" type="button"><svg class="i"><use href="#i-download"/></svg>Markdown</button><span class="help" id="dPulir" style="margin:0"></span></div>
+  <div class="card"><h3><svg class="i"><use href="#i-book"/></svg>Cómo citar las herramientas que usaste</h3><p class="sub">Para la lista de referencias. Revisa la versión y la fecha: cambian con frecuencia.</p><div id="citas"></div></div>
 </section>
 
+<!-- ═════ 6 · ENTRENAR ═════ -->
+<section class="screen" data-step="6">
+  <header class="sh" style="--c:#C98200"><div class="sh-ico"><svg class="i"><use href="#i-scale"/></svg></div>
+    <div><p class="sh-step">Para practicar</p><h2>Situaciones reales</h2><p class="sh-lede">Casos que se dan en clase todos los cursos. No hay preguntas trampa: se trata de que reconozcas la situación cuando te pase a ti. Funciona sin conexión a ninguna IA.</p></div></header>
+  <div class="card"><div class="qbar"><i id="qProg"></i></div><div id="quiz"></div></div>
+</section>
 </main>
 
-<footer>
-  CriterIA · Fernando Borrás Rocher · Universidad Miguel Hernández de Elche<br>
-  Material de apoyo. La norma que se aplica a tu trabajo es la de tu universidad y la de tu profesor.
-</footer>
-<div class="toast" id="toast"></div>
+<footer><hr><p>CriterIA 2.0 · Fernando Borrás Rocher · Universidad Miguel Hernández de Elche. Material de apoyo: la norma que se aplica a tu trabajo es la de tu universidad y la de tu profesor. Tus datos no salen del navegador; las referencias se consultan en Crossref y OpenAlex y, solo si pones clave, el texto de la declaración va a OpenAI para pulirlo.</p></footer>
 
+<div class="bottomnav"><div class="bn-in">
+  <button class="btn btn-ghost" id="navBack" type="button"><svg class="i"><use href="#i-left"/></svg>Atrás</button>
+  <div class="bn-hint" id="navHint"></div>
+  <button class="btn btn-primary" id="navNext" type="button"><span id="navNextTxt">Siguiente</span><svg class="i"><use href="#i-right"/></svg></button>
+</div></div>
+
+<div class="modal" id="mAjustes" role="dialog" aria-modal="true" aria-labelledby="mAjT"><div class="modal-box"><div class="modal-head"><h2 id="mAjT">Ajustes</h2><button type="button" data-close>Cerrar</button></div><div class="modal-body">
+  <p class="help" style="margin:0 0 12px">La app funciona entera <b>sin clave</b>. La clave de OpenAI solo sirve para pulir la redacción de la declaración, sin añadir hechos.</p>
+  <div class="field"><label for="apiKey">Clave de OpenAI (opcional)</label><div class="keyrow"><input type="password" id="apiKey" placeholder="sk-proj-…" autocomplete="off"><button class="eye" id="btnEye" type="button" aria-label="Mostrar u ocultar"><svg class="i"><use href="#i-eye"/></svg></button></div></div>
+  <div class="field"><label for="model">Modelo</label><select id="model"><option value="gpt-6-luna">gpt-6-luna (recomendado)</option><option value="gpt-4o-mini">gpt-4o-mini</option><option value="gpt-4.1-mini">gpt-4.1-mini</option></select></div>
+  <div class="actions"><button class="btn btn-dark btn-sm" id="saveKey" type="button">Guardar</button><button class="btn btn-ghost btn-sm" id="expAll" type="button"><svg class="i"><use href="#i-download"/></svg>Exportar mis datos</button><button class="btn btn-ghost btn-sm" id="wipe" type="button"><svg class="i"><use href="#i-trash"/></svg>Borrar todos mis datos</button></div>
+  <p class="help" id="keyState"></p></div></div></div>
+<div class="modal" id="mTexto" role="dialog" aria-modal="true" aria-labelledby="mTxT"><div class="modal-box"><div class="modal-head"><h2 id="mTxT">Texto</h2><button type="button" data-close>Cerrar</button></div><div class="modal-body" id="mTxB"></div></div></div>
+<div class="modal" id="mHelp" role="dialog" aria-modal="true" aria-labelledby="mHelpT"><div class="modal-box"><div class="modal-head"><h2 id="mHelpT">Ayuda</h2><button type="button" data-close>Cerrar</button></div><div class="modal-body"><div class="glos" id="glos"></div></div></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
-/* ================= NIVELES ================= */
+
+/* ══════════════════════════════════════════════════════════
+   CriterIA 2.0 · declaración de uso de la IA en el aprendizaje
+   Fernando Borrás Rocher · Universidad Miguel Hernández de Elche
+   ══════════════════════════════════════════════════════════ */
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const ico = n => `<svg class="i"><use href="#i-${n}"/></svg>`;
+let tT; function toast(m, ms = 3400){ const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tT); tT = setTimeout(() => t.classList.remove('on'), ms); }
+function busy(b, on, t){ if(on){ b.dataset.h = b.innerHTML; b.innerHTML = '<span class="spin"></span> ' + (t || 'Trabajando'); b.disabled = true; } else { b.innerHTML = b.dataset.h || b.innerHTML; b.disabled = false; } }
+function dl(n, c, t){ const b = c instanceof Blob ? c : new Blob([c], {type:t}); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = n; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 900); }
 const NIVELES = [
  { n:0, t:"Sin IA", s:"La tarea mide algo que la IA haría por ti. Aquí no se usa, ni para empezar.",
    si:["Buscadores, diccionarios y correctores ortográficos de toda la vida.","Preguntar dudas a tu profesor o a compañeros."],
@@ -384,41 +837,51 @@ const USOS = ["Entender un concepto","Buscar enfoques o estructura","Resumir tex
   "Corregir gramática y estilo","Traducir","Generar código","Analizar datos","Generar ejemplos o preguntas de repaso",
   "Buscar bibliografía","Discutir la interpretación de un resultado","Otro"];
 
-/* ================= ESTADO ================= */
-const LS_KEY='ia_openai_key', LS_STATE='criteria_state';
-let S={ nombre:'', asig:'', nivel:null, model:'gpt-6-luna', log:[], quiz:{i:0,aciertos:0,hechas:[]}, decl:'' };
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function save(){ try{localStorage.setItem(LS_STATE,JSON.stringify(S));}catch(e){} }
-function load(){ try{const r=localStorage.getItem(LS_STATE); if(r) S=Object.assign(S,JSON.parse(r));}catch(e){}
-  if(!Array.isArray(S.log)) S.log=[]; if(!S.quiz) S.quiz={i:0,aciertos:0,hechas:[]}; }
-let tT; function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('on'),3200);}
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function busy(b,on,t){ if(on){b.dataset.h=b.innerHTML;b.innerHTML='<span class="spin"></span>'+(t||'Trabajando');b.disabled=true;} else {b.innerHTML=b.dataset.h||b.innerHTML;b.disabled=false;} }
-function dl(n,c,t){const b=new Blob([c],{type:t});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(u),700);}
 
-$$('nav button').forEach(b=>b.addEventListener('click',()=>{
-  $$('nav button').forEach(x=>x.classList.remove('active')); b.classList.add('active');
-  $$('.view').forEach(v=>v.classList.remove('active')); $('#v-'+b.dataset.view).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(b.dataset.view==='entrenar') renderQuiz();
-}));
-
-/* ================= NIVELES: render ================= */
-function renderNiveles(){
-  $('#niveles').innerHTML = NIVELES.map(l=>`
-    <div class="lv ${S.nivel===l.n?'on':''}" data-n="${l.n}">
-      <div class="lv-h"><div class="lv-n">${l.n}</div>
-        <div><div class="lv-t">${l.t}</div><div class="lv-s">${esc(l.s)}</div></div></div>
-      <div class="lv-d">
-        <div class="lv-col si"><b>Puedes</b><ul>${l.si.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
-        <div class="lv-col no"><b>No puedes</b><ul>${l.no.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
-        <div class="lv-col ev"><b>Guarda</b><ul>${l.ev.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
-      </div></div>`).join('');
-  $$('#niveles .lv').forEach(el=>el.onclick=()=>{
-    const n=+el.dataset.n; S.nivel = (S.nivel===n?null:n); save(); renderNiveles(); renderHeader();
-  });
-}
-function renderHeader(){ $('#hLv').textContent = S.nivel==null?'—':S.nivel; }
+const QUIZ=[
+ { q:"Le pides a un modelo bibliografía sobre tu tema y te da ocho referencias con DOI y todo. ¿Qué haces?",
+   o:["Las cito: llevan DOI, así que existen.","Compruebo una a una que existen y las leo antes de citarlas.","Cito solo las que reconozco.","Le pido que confirme que son reales."],
+   r:1, e:"El DOI es lo más fácil de inventar de una referencia falsa, y el modelo confirmará encantado que son reales porque no tiene forma de saberlo. La única salida es comprobarlas contra una base real y leerlas. Es exactamente lo que hace la pestaña de verificación de esta app." },
+ { q:"Vas a analizar las respuestas de una encuesta que has pasado en clase. ¿Puedes pegar el fichero en un chat de IA para que te ayude?",
+   o:["Sí, si borro los nombres.","Sí, son datos de clase, no médicos.","No, salvo que tengas base legal y lo hayas informado a quien respondió.","Sí, si el chat es de pago."],
+   r:2, e:"Quitar el nombre no anonimiza: la combinación de edad, grupo y respuestas suele reidentificar. Los datos que te confían otras personas no son tuyos para subirlos a un servicio de terceros. Trabaja con datos agregados, o pide ayuda con el método sin pegar el fichero." },
+ { q:"El enunciado no dice nada sobre IA. ¿Qué significa?",
+   o:["Que está permitido, porque no lo prohíbe.","Que está prohibido, porque no lo autoriza.","Que hay que preguntar al profesor antes de empezar.","Que da igual mientras no se note."],
+   r:2, e:"El silencio no es permiso ni prohibición: es una laguna, y las lagunas se resuelven preguntando. Un correo de dos líneas antes de empezar te ahorra tener que defender tu interpretación después, cuando ya no tiene arreglo." },
+ { q:"Escribes tú el trabajo entero y luego le pides al modelo que mejore la redacción. ¿Hay que declararlo?",
+   o:["No, las ideas son mías.","No, es como un corrector ortográfico.","Sí: la redacción también es parte de lo que se evalúa.","Solo si cambia mucho el texto."],
+   r:2, e:"Un corrector ortográfico señala errores; un modelo reescribe. Si en tu trabajo se evalúa la expresión escrita —y en casi todos se evalúa— ese uso es relevante y se declara. Declararlo casi nunca penaliza; que se descubra sin declarar, sí." },
+ { q:"El modelo te explica un concepto de estadística de forma clarísima y tú lo entiendes por fin. ¿Puedes usar esa explicación en el trabajo?",
+   o:["Sí, ya la he entendido, así que es mía.","Sí, si cambio las palabras.","Debo verificarla en una fuente citable y escribirla yo.","No puedo usar el concepto para nada."],
+   r:2, e:"Entenderlo es tuyo y es lo importante. Pero una explicación de un modelo no es una fuente citable: puede estar sutilmente mal y no la firma nadie. Localiza el manual o el artículo donde se dice, comprueba que coincide, cítalo y escríbelo con tus palabras." },
+ { q:"Trabajo en grupo. Un compañero ha generado su parte con IA y no lo dice. ¿Qué te afecta a ti?",
+   o:["Nada, cada uno responde de lo suyo.","Todo: en un trabajo conjunto la entrega es de todos.","Solo si el profesor lo detecta.","Depende de si tú también la usaste."],
+   r:1, e:"En una entrega firmada por varios, la responsabilidad es compartida y las consecuencias académicas también. Es incómodo, pero hay que hablarlo dentro del grupo antes de entregar, no después." },
+ { q:"Le pides que te resuma un artículo que no has leído y lo citas a partir del resumen. ¿Problema?",
+   o:["Ninguno, para eso sirven los resúmenes.","Sí: estás citando algo que no has leído.","Solo si el resumen es corto.","Solo si el artículo es de pago."],
+   r:1, e:"Citar es afirmar que ese trabajo dice eso. Si no lo has abierto, estás avalando algo que no has comprobado, y los resúmenes automáticos invierten matices con frecuencia: un «no se encontraron diferencias» se convierte en «se encontraron diferencias» con una facilidad pasmosa." },
+ { q:"Generas código con IA para tu práctica. Funciona y da el resultado esperado. ¿Suficiente?",
+   o:["Sí, el resultado es correcto.","Debo entender cada línea y saber defenderla.","Basta con comentarlo.","Solo si es para nota."],
+   r:1, e:"Que funcione y que sea correcto no es lo mismo: el código puede dar un número plausible por un motivo equivocado. Y si no puedes explicar por qué elegiste ese test o ese bucle, la práctica no ha evaluado nada. Lee, entiende, y si algo no lo entiendes, quítalo o pregunta." },
+ { q:"Un detector de IA marca tu texto, escrito por ti, como generado. ¿Qué haces?",
+   o:["Reescribo hasta que pase el detector.","Aporto tu proceso: borradores, historial, bitácora.","Reconozco que lo usé para acabar antes.","Nada, esos detectores no valen."],
+   r:1, e:"Los detectores tienen falsos positivos, y castigan especialmente a quien escribe de forma clara y estructurada o en un idioma que no es el suyo. Tu defensa no es el detector: es la trazabilidad. El historial de versiones de tu documento y una bitácora son la mejor prueba de autoría que existe." },
+ { q:"El modelo te da un dato con una cifra concreta: «el 34 % de los pacientes». ¿Qué haces antes de ponerlo?",
+   o:["Lo pongo, es un dato concreto.","Le pido la fuente y la cito.","Busco la fuente original, la abro y compruebo la cifra.","Lo redondeo para no comprometerme."],
+   r:2, e:"Que sea concreto es precisamente la señal de alarma: los modelos generan cifras verosímiles con la misma soltura con la que generan frases. Y pedirle la fuente no basta, porque puede inventarla también. Hay que llegar hasta el documento original." },
+ { q:"Usas IA para traducir tu trabajo al inglés en una asignatura donde se evalúa tu inglés.",
+   o:["Es una herramienta más, como el diccionario.","Es sustituir justo lo que se está evaluando.","Vale si luego lo reviso.","Vale si lo declaro."],
+   r:1, e:"La pregunta no es si la herramienta es legítima en general, sino qué mide la tarea. Si lo evaluado es tu competencia en inglés, traducir automáticamente vacía la evaluación de sentido, y declararlo no lo arregla: simplemente documenta que no has hecho la tarea." },
+ { q:"Quieres usar IA para ordenar tus ideas antes de escribir el TFG. Tu tutor no ha dicho nada.",
+   o:["Adelante, es solo para organizarme.","Se lo comento en la próxima tutoría y lo anoto.","Mejor no usarla en absoluto.","Lo uso y lo declaro solo si me lo preguntan."],
+   r:1, e:"Es probablemente el uso más defendible que existe, y aun así se comenta. Un tutor informado te defiende ante el tribunal; un tutor sorprendido en la defensa, no. Además, anotarlo cuesta treinta segundos y te da la declaración hecha." },
+ { q:"El modelo te contradice lo que dijo el profesor en clase. ¿A quién haces caso?",
+   o:["Al modelo, tiene más información.","Al profesor, que pone la nota.","A la fuente que puedas comprobar, y si persiste la duda, preguntas.","A los dos, poniendo las dos versiones."],
+   r:2, e:"Ni por autoridad ni por comodidad: por evidencia. Busca el manual, el artículo o la guía y mira qué dice. Y si sigue sin cuadrar, llevar esa discrepancia a clase es de las mejores preguntas que puedes hacer." },
+ { q:"Terminas el trabajo con ayuda de IA y no sabrías explicar el apartado 4 en una defensa oral.",
+   o:["Lo entrego: la defensa es otro momento.","Lo estudio antes de la defensa.","Lo reescribo hasta que lo entienda, o lo quito.","Lo dejo y espero que no pregunten por ahí."],
+   r:2, e:"Es la regla más simple y la que resume todas las demás: si no puedes defenderlo, no es tuyo. Y no es un problema de honestidad solamente, es que no has aprendido esa parte, que era el motivo de la tarea." }
+];
 
 /* ================= VERIFICADOR DE REFERENCIAS ================= */
 const DOI_RE=/10\.\d{4,9}\/[-._;()\/:a-z0-9A-Z]+/;
@@ -502,7 +965,7 @@ async function comprobar(){
     btn.innerHTML='<span class="spin"></span>Comprobando '+(i+1)+'/'+refs.length;
     pintarRefs();
   }
-  busy(btn,false); $('#expRefs').style.display='inline-flex';
+  busy(btn,false); $('#expRefs').classList.remove('hidden');
   registrarQuiz();
 }
 
@@ -513,197 +976,278 @@ function pintarRefs(){
   $('#refList').innerHTML=RESULTADOS.map(r=>{
     const [c,ic,tx]=et[r.verdict];
     return `<div class="ref ${cls[r.verdict]}">
-      <span class="verdict ${c}"><i class="ti ${ic}"></i>${tx}</span>
+      <span class="verdict ${c}">${tx}</span>
       <div class="ref-in">${esc(r.ref)}</div>
       <div class="ref-out">${esc(r.msg)}${r.found?'<br><b>En Crossref:</b> '+esc(fmt(r.found)):''}
-      ${r.doi?`<br><a href="https://doi.org/${esc(r.doi)}" target="_blank" rel="noopener" style="color:var(--acc)">Abrir ${esc(r.doi)}</a>`:''}</div></div>`;
+      ${r.doi?`<br><a href="https://doi.org/${esc(r.doi)}" target="_blank" rel="noopener" >Abrir ${esc(r.doi)}</a>`:''}</div></div>`;
   }).join('');
   const ok=RESULTADOS.filter(r=>r.verdict==='ok').length;
   const bad=RESULTADOS.filter(r=>r.verdict==='bad').length;
   const wa=RESULTADOS.filter(r=>r.verdict==='warn').length;
   $('#refResumen').innerHTML = !RESULTADOS.length?'':
-    (bad||wa ? `<div class="notice n-bad"><i class="ti ti-alert-triangle"></i><div><b>${bad} sin localizar y ${wa} que no cuadran</b>, de ${RESULTADOS.length}. Míralas una a una antes de entregar: cada una es una cita que un tribunal comprueba en diez segundos. Ojo, un libro o una tesis pueden no estar en Crossref y ser perfectamente reales: eso lo decides tú buscándolos.</div></div>`
-     : `<div class="notice n-ok"><i class="ti ti-circle-check"></i><div>Las ${ok} referencias existen y coinciden. Aun así, ábrelas y léelas: que exista no significa que diga lo que tú citas.</div></div>`);
-}
-</script>
-
-<script>
-/* ================= BITÁCORA ================= */
-function renderLog(){
-  if(!S.log.length){ $('#bList').innerHTML='<div class="empty"><i class="ti ti-notebook"></i><p>Todavía no has anotado nada. La primera vez que uses IA en este trabajo, vuelve aquí.</p></div>'; return; }
-  $('#bList').innerHTML=`<table><thead><tr><th>Fecha</th><th>Herramienta</th><th>Uso</th><th>Qué hiciste</th><th></th></tr></thead><tbody>
-    ${S.log.map((e,i)=>`<tr>
-      <td style="white-space:nowrap">${esc(e.fecha)}</td>
-      <td>${esc(e.tool)}</td>
-      <td>${esc(e.uso)}${e.verif?' <span class="verdict v-ok" style="margin:0"><i class="ti ti-check"></i>verificado</span>':''}</td>
-      <td>${esc(e.accion||'—')}${e.prompt?`<br><span style="color:var(--muted);font-size:.76rem">«${esc(e.prompt.slice(0,110))}»</span>`:''}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="delLog(${i})"><i class="ti ti-x"></i></button></td></tr>`).join('')}
-    </tbody></table>`;
-}
-function delLog(i){ S.log.splice(i,1); save(); renderLog(); }
-function addLog(){
-  const tool=$('#bTool').value.trim(), uso=$('#bUso').value;
-  if(!tool){ toast('¿Qué herramienta usaste?'); return; }
-  S.log.push({ fecha:new Date().toLocaleDateString('es-ES'), tool, uso,
-    prompt:$('#bPrompt').value.trim(), accion:$('#bAccion').value.trim(), verif:$('#bVerif').checked });
-  save(); $('#bPrompt').value=''; $('#bAccion').value=''; $('#bVerif').checked=false;
-  renderLog(); toast('Anotado');
-}
-function anexoTexto(){
-  let t=`ANEXO · REGISTRO DE USO DE IA GENERATIVA\n\n${S.nombre||''}\n${S.asig||''}\n`;
-  t+=`Nivel de uso declarado: ${S.nivel==null?'no indicado':NIVELES[S.nivel].n+' — '+NIVELES[S.nivel].t}\n\n`;
-  S.log.forEach((e,i)=>{ t+=`${i+1}. ${e.fecha} · ${e.tool} · ${e.uso}${e.verif?' · verificado':''}\n`;
-    if(e.prompt) t+=`   Petición: ${e.prompt}\n`;
-    if(e.accion) t+=`   Uso dado a la respuesta: ${e.accion}\n`; t+='\n'; });
-  return t;
+    (bad||wa ? `<div class="aviso"><div><b>${bad} sin localizar y ${wa} que no cuadran</b>, de ${RESULTADOS.length}. Míralas una a una antes de entregar: cada una es una cita que un tribunal comprueba en diez segundos. Ojo, un libro o una tesis pueden no estar en Crossref y ser perfectamente reales: eso lo decides tú buscándolos.</div></div>`
+     : `<div class="okbox"><div>Las ${ok} referencias existen y coinciden. Aun así, ábrelas y léelas: que exista no significa que diga lo que tú citas.</div></div>`);
 }
 
-/* ================= DECLARACIÓN ================= */
-function declaracionTexto(){
-  if(S.nivel==null) return 'Elige primero el nivel de uso en la pestaña «Qué puedo usar».';
-  const L=NIVELES[S.nivel], est=$('#dEstilo').value, lugar=$('#dLugar').value;
-  const usos=[...new Set(S.log.map(e=>e.uso))];
-  const tools=[...new Set(S.log.map(e=>e.tool))];
-  const verif=S.log.filter(e=>e.verif).length;
-  let t='';
-  if(S.nivel===0){
-    t=`Declaro que en la elaboración de este trabajo no he utilizado herramientas de inteligencia artificial generativa.`;
-  } else {
-    t=`Declaro haber utilizado herramientas de inteligencia artificial generativa en la elaboración de este trabajo`;
-    t+= tools.length? ` (${tools.join(', ')})` : '';
-    t+=`, en un uso correspondiente al nivel ${L.n} («${L.t}»): ${L.dcl}.`;
-    if(est!=='breve' && usos.length){
-      t+=`\n\nConcretamente, las he empleado para: ${usos.map(u=>u.toLowerCase()).join('; ')}.`;
-    }
-    t+=`\n\nAsumo la responsabilidad íntegra sobre el contenido entregado. He revisado y verificado la información obtenida por estos medios${verif?`, dejando constancia de ${verif} comprobación${verif>1?'es':''} en el registro de uso adjunto`:''}, y las ideas, la estructura y las conclusiones son de mi autoría.`;
-    if(est==='tabla' && S.log.length){
-      t+=`\n\nRegistro de usos:\n`;
-      t+=`Fecha | Herramienta | Uso | Verificado\n`;
-      S.log.forEach(e=>{ t+=`${e.fecha} | ${e.tool} | ${e.uso} | ${e.verif?'Sí':'No'}\n`; });
-    }
-  }
-  return `[${lugar}]\n\n${t}\n`;
-}
-async function generarDecl(){
-  const btn=$('#dGen'); const base=declaracionTexto();
-  S.decl=base; $('#dOut').textContent=base; save();
-  const key=localStorage.getItem(LS_KEY);
-  if(!key) return;
-  busy(btn,true,'Puliendo');
-  try{
-    const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({ model:S.model||'gpt-6-luna', temperature:0.3, max_tokens:700,
-        messages:[{role:'system',content:'Eres un corrector de estilo académico en español. Recibes una declaración de uso de IA para un trabajo universitario. Mejora su redacción para que suene natural y formal, en primera persona. No añadas hechos, herramientas, usos ni compromisos que no estén en el original: si algo no consta, no lo inventes. Conserva la tabla si la hay. Devuelve solo el texto.'},
-                  {role:'user',content:base}] }) });
-    if(r.ok){ const j=await r.json(); const t=(j.choices[0].message.content||'').trim();
-      if(t){ S.decl=t; $('#dOut').textContent=t; save(); } }
-  }catch(e){}
-  busy(btn,false);
-}
-
-/* ================= ENTRENAMIENTO ================= */
-const QUIZ=[
- { q:"Le pides a un modelo bibliografía sobre tu tema y te da ocho referencias con DOI y todo. ¿Qué haces?",
-   o:["Las cito: llevan DOI, así que existen.","Compruebo una a una que existen y las leo antes de citarlas.","Cito solo las que reconozco.","Le pido que confirme que son reales."],
-   r:1, e:"El DOI es lo más fácil de inventar de una referencia falsa, y el modelo confirmará encantado que son reales porque no tiene forma de saberlo. La única salida es comprobarlas contra una base real y leerlas. Es exactamente lo que hace la pestaña de verificación de esta app." },
- { q:"Vas a analizar las respuestas de una encuesta que has pasado en clase. ¿Puedes pegar el fichero en un chat de IA para que te ayude?",
-   o:["Sí, si borro los nombres.","Sí, son datos de clase, no médicos.","No, salvo que tengas base legal y lo hayas informado a quien respondió.","Sí, si el chat es de pago."],
-   r:2, e:"Quitar el nombre no anonimiza: la combinación de edad, grupo y respuestas suele reidentificar. Los datos que te confían otras personas no son tuyos para subirlos a un servicio de terceros. Trabaja con datos agregados, o pide ayuda con el método sin pegar el fichero." },
- { q:"El enunciado no dice nada sobre IA. ¿Qué significa?",
-   o:["Que está permitido, porque no lo prohíbe.","Que está prohibido, porque no lo autoriza.","Que hay que preguntar al profesor antes de empezar.","Que da igual mientras no se note."],
-   r:2, e:"El silencio no es permiso ni prohibición: es una laguna, y las lagunas se resuelven preguntando. Un correo de dos líneas antes de empezar te ahorra tener que defender tu interpretación después, cuando ya no tiene arreglo." },
- { q:"Escribes tú el trabajo entero y luego le pides al modelo que mejore la redacción. ¿Hay que declararlo?",
-   o:["No, las ideas son mías.","No, es como un corrector ortográfico.","Sí: la redacción también es parte de lo que se evalúa.","Solo si cambia mucho el texto."],
-   r:2, e:"Un corrector ortográfico señala errores; un modelo reescribe. Si en tu trabajo se evalúa la expresión escrita —y en casi todos se evalúa— ese uso es relevante y se declara. Declararlo casi nunca penaliza; que se descubra sin declarar, sí." },
- { q:"El modelo te explica un concepto de estadística de forma clarísima y tú lo entiendes por fin. ¿Puedes usar esa explicación en el trabajo?",
-   o:["Sí, ya la he entendido, así que es mía.","Sí, si cambio las palabras.","Debo verificarla en una fuente citable y escribirla yo.","No puedo usar el concepto para nada."],
-   r:2, e:"Entenderlo es tuyo y es lo importante. Pero una explicación de un modelo no es una fuente citable: puede estar sutilmente mal y no la firma nadie. Localiza el manual o el artículo donde se dice, comprueba que coincide, cítalo y escríbelo con tus palabras." },
- { q:"Trabajo en grupo. Un compañero ha generado su parte con IA y no lo dice. ¿Qué te afecta a ti?",
-   o:["Nada, cada uno responde de lo suyo.","Todo: en un trabajo conjunto la entrega es de todos.","Solo si el profesor lo detecta.","Depende de si tú también la usaste."],
-   r:1, e:"En una entrega firmada por varios, la responsabilidad es compartida y las consecuencias académicas también. Es incómodo, pero hay que hablarlo dentro del grupo antes de entregar, no después." },
- { q:"Le pides que te resuma un artículo que no has leído y lo citas a partir del resumen. ¿Problema?",
-   o:["Ninguno, para eso sirven los resúmenes.","Sí: estás citando algo que no has leído.","Solo si el resumen es corto.","Solo si el artículo es de pago."],
-   r:1, e:"Citar es afirmar que ese trabajo dice eso. Si no lo has abierto, estás avalando algo que no has comprobado, y los resúmenes automáticos invierten matices con frecuencia: un «no se encontraron diferencias» se convierte en «se encontraron diferencias» con una facilidad pasmosa." },
- { q:"Generas código con IA para tu práctica. Funciona y da el resultado esperado. ¿Suficiente?",
-   o:["Sí, el resultado es correcto.","Debo entender cada línea y saber defenderla.","Basta con comentarlo.","Solo si es para nota."],
-   r:1, e:"Que funcione y que sea correcto no es lo mismo: el código puede dar un número plausible por un motivo equivocado. Y si no puedes explicar por qué elegiste ese test o ese bucle, la práctica no ha evaluado nada. Lee, entiende, y si algo no lo entiendes, quítalo o pregunta." },
- { q:"Un detector de IA marca tu texto, escrito por ti, como generado. ¿Qué haces?",
-   o:["Reescribo hasta que pase el detector.","Aporto tu proceso: borradores, historial, bitácora.","Reconozco que lo usé para acabar antes.","Nada, esos detectores no valen."],
-   r:1, e:"Los detectores tienen falsos positivos, y castigan especialmente a quien escribe de forma clara y estructurada o en un idioma que no es el suyo. Tu defensa no es el detector: es la trazabilidad. El historial de versiones de tu documento y una bitácora son la mejor prueba de autoría que existe." },
- { q:"El modelo te da un dato con una cifra concreta: «el 34 % de los pacientes». ¿Qué haces antes de ponerlo?",
-   o:["Lo pongo, es un dato concreto.","Le pido la fuente y la cito.","Busco la fuente original, la abro y compruebo la cifra.","Lo redondeo para no comprometerme."],
-   r:2, e:"Que sea concreto es precisamente la señal de alarma: los modelos generan cifras verosímiles con la misma soltura con la que generan frases. Y pedirle la fuente no basta, porque puede inventarla también. Hay que llegar hasta el documento original." },
- { q:"Usas IA para traducir tu trabajo al inglés en una asignatura donde se evalúa tu inglés.",
-   o:["Es una herramienta más, como el diccionario.","Es sustituir justo lo que se está evaluando.","Vale si luego lo reviso.","Vale si lo declaro."],
-   r:1, e:"La pregunta no es si la herramienta es legítima en general, sino qué mide la tarea. Si lo evaluado es tu competencia en inglés, traducir automáticamente vacía la evaluación de sentido, y declararlo no lo arregla: simplemente documenta que no has hecho la tarea." },
- { q:"Quieres usar IA para ordenar tus ideas antes de escribir el TFG. Tu tutor no ha dicho nada.",
-   o:["Adelante, es solo para organizarme.","Se lo comento en la próxima tutoría y lo anoto.","Mejor no usarla en absoluto.","Lo uso y lo declaro solo si me lo preguntan."],
-   r:1, e:"Es probablemente el uso más defendible que existe, y aun así se comenta. Un tutor informado te defiende ante el tribunal; un tutor sorprendido en la defensa, no. Además, anotarlo cuesta treinta segundos y te da la declaración hecha." },
- { q:"El modelo te contradice lo que dijo el profesor en clase. ¿A quién haces caso?",
-   o:["Al modelo, tiene más información.","Al profesor, que pone la nota.","A la fuente que puedas comprobar, y si persiste la duda, preguntas.","A los dos, poniendo las dos versiones."],
-   r:2, e:"Ni por autoridad ni por comodidad: por evidencia. Busca el manual, el artículo o la guía y mira qué dice. Y si sigue sin cuadrar, llevar esa discrepancia a clase es de las mejores preguntas que puedes hacer." },
- { q:"Terminas el trabajo con ayuda de IA y no sabrías explicar el apartado 4 en una defensa oral.",
-   o:["Lo entrego: la defensa es otro momento.","Lo estudio antes de la defensa.","Lo reescribo hasta que lo entienda, o lo quito.","Lo dejo y espero que no pregunten por ahí."],
-   r:2, e:"Es la regla más simple y la que resume todas las demás: si no puedes defenderlo, no es tuyo. Y no es un problema de honestidad solamente, es que no has aprendido esa parte, que era el motivo de la tarea." }
-];
-function renderQuiz(){
-  const q=S.quiz;
-  $('#qProg').style.width = Math.round(q.i/QUIZ.length*100)+'%';
-  if(q.i>=QUIZ.length){
-    const pct=Math.round(q.aciertos/QUIZ.length*100);
-    $('#quiz').innerHTML=`<div class="notice ${pct>=80?'n-ok':pct>=60?'n-warn':'n-bad'}"><i class="ti ti-flag"></i><div>
-      <b>${q.aciertos} de ${QUIZ.length}.</b> ${pct>=80?'Tienes el criterio bien calibrado. Lo difícil ahora es aplicarlo cuando vas con prisa.':pct>=60?'Vas bien, pero repasa las que fallaste: suelen ser las situaciones que más caro salen.':'Merece la pena repetirlo leyendo las explicaciones con calma. Ninguna de estas situaciones es rara.'}</div></div>
-      <button class="btn btn-primary" onclick="reiniciarQuiz()"><i class="ti ti-refresh"></i>Empezar de nuevo</button>`;
-    return;
-  }
-  const it=QUIZ[q.i], hecha=q.hechas[q.i];
-  $('#quiz').innerHTML=`<div class="eyebrow">Situación ${q.i+1} de ${QUIZ.length}</div>
-    <p style="font-weight:600;font-size:.95rem;margin-bottom:14px;line-height:1.5">${esc(it.q)}</p>
-    ${it.o.map((o,i)=>`<div class="q-opt ${hecha!=null?'locked ':''}${hecha!=null&&i===it.r?'right':''}${hecha!=null&&hecha===i&&i!==it.r?'wrong':''}" data-i="${i}">${esc(o)}</div>`).join('')}
-    ${hecha!=null?`<div class="q-exp">${esc(it.e)}</div>
-      <div class="row" style="margin-top:13px"><button class="btn btn-primary" onclick="siguienteQuiz()">${q.i===QUIZ.length-1?'Ver resultado':'Siguiente'}<i class="ti ti-arrow-right"></i></button></div>`:''}`;
-  if(hecha==null) $$('#quiz .q-opt').forEach(el=>el.onclick=()=>{
-    const i=+el.dataset.i; S.quiz.hechas[S.quiz.i]=i; if(i===it.r) S.quiz.aciertos++;
-    save(); renderQuiz();
-  });
-}
-function siguienteQuiz(){ S.quiz.i++; save(); renderQuiz(); }
-function reiniciarQuiz(){ S.quiz={i:0,aciertos:0,hechas:[]}; save(); renderQuiz(); }
 function registrarQuiz(){}
 
-/* ================= ARRANQUE ================= */
-load();
-$('#bUso').innerHTML=USOS.map(u=>`<option>${u}</option>`).join('');
-$('#cNombre').value=S.nombre; $('#cAsig').value=S.asig; $('#model').value=S.model;
-const k=localStorage.getItem(LS_KEY); if(k){ $('#apiKey').value=k; $('#keyState').textContent='Guardada en este navegador.'; }
-$('#cNombre').oninput=e=>{S.nombre=e.target.value;save();};
-$('#cAsig').oninput=e=>{S.asig=e.target.value;save();};
-$('#model').onchange=e=>{S.model=e.target.value;save();};
-$('#saveKey').onclick=()=>{ const v=$('#apiKey').value.trim();
-  if(!v){ localStorage.removeItem(LS_KEY); $('#keyState').textContent='Borrada.'; return; }
-  localStorage.setItem(LS_KEY,v); $('#keyState').textContent='Guardada en este navegador.'; toast('Clave guardada'); };
-$('#doCheck').onclick=comprobar;
-$('#loadDemo').onclick=()=>{ $('#refIn').value=
-`Page, M. J., McKenzie, J. E., Bossuyt, P. M. y cols. (2021). The PRISMA 2020 statement: an updated guideline for reporting systematic reviews. BMJ, 372, n71. https://doi.org/10.1136/bmj.n71
-Martínez Ruiz, P. y Delgado Sanz, C. (2022). Aprendizaje adaptativo mediado por IA en estudios de grado. Revista Iberoamericana de Educación Superior, 41(2), 88-104. https://doi.org/10.1016/j.riesup.2022.02.011
-Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2ª ed.). Lawrence Erlbaum Associates.`;
-  toast('Ejemplo cargado. Comprueba tú cuál de las tres no existe.'); };
-$('#expRefs').onclick=()=>{
-  let t='INFORME DE VERIFICACIÓN DE REFERENCIAS\n'+new Date().toLocaleString('es-ES')+'\n\n';
-  RESULTADOS.forEach((r,i)=>{ t+=`${i+1}. [${r.verdict==='ok'?'EXISTE':r.verdict==='warn'?'NO COINCIDE':'NO LOCALIZADA'}] ${r.ref}\n   ${r.msg}\n`;
-    if(r.found) t+=`   En Crossref: ${fmt(r.found)}\n`; t+='\n'; });
-  dl('verificacion-referencias.txt',t,'text/plain'); };
-$('#bAdd').onclick=addLog;
-$('#bExp').onclick=()=>dl('anexo-uso-ia.txt',anexoTexto(),'text/plain');
-$('#dGen').onclick=generarDecl;
-$('#dCopy').onclick=()=>navigator.clipboard.writeText($('#dOut').textContent).then(()=>toast('Copiado'),()=>toast('No se ha podido copiar'));
-$('#expAll').onclick=()=>dl('criteria-datos.json',JSON.stringify(S,null,1),'application/json');
-$('#wipe').onclick=()=>{ if(!confirm('Se borrarán tu bitácora y tu progreso. ¿Seguro?')) return;
-  localStorage.removeItem(LS_STATE); S={nombre:'',asig:'',nivel:null,model:'gpt-6-luna',log:[],quiz:{i:0,aciertos:0,hechas:[]},decl:''};
-  $('#cNombre').value='';$('#cAsig').value='';renderNiveles();renderLog();renderHeader();renderQuiz();toast('Borrado'); };
-renderNiveles(); renderLog(); renderHeader();
-if(S.decl) $('#dOut').textContent=S.decl;
+
+/* ── colores, traducciones y nivel mínimo de cada uso ── */
+const NIV_COL = ['#5D7691','#1F6FB2','#0E8C7A','#C98200','#E4572E'];
+const NIV_I18N = {
+  pt:[['Sem IA',''],['IA para explorar','utilizei-as apenas na fase prévia de exploração e compreensão do tema, sem que nenhum dos seus resultados tenha passado para o texto entregue'],['IA para assistir','utilizei-as como apoio na redação e revisão de um texto cujas ideias, estrutura e argumentação são minhas'],['IA para colaborar','trabalhei com elas de forma iterativa, gerando rascunhos e análises que depois critiquei, corrigi e reescrevi'],['IA integral','a sua utilização faz parte do próprio objeto do trabalho, pelo que documento tanto os resultados obtidos como o critério com que os supervisionei e corrigi']],
+  en:[['No AI',''],['AI for exploring','I used them only in the preliminary phase of exploring and understanding the topic, and none of their outputs was carried into the submitted text'],['AI for assistance','I used them to support the drafting and revision of a text whose ideas, structure and argument are my own'],['AI for collaboration','I worked with them iteratively, generating drafts and analyses that I then critiqued, corrected and rewrote'],['Full AI','their use is part of the object of the work itself, so I document both the results obtained and the judgement with which I supervised and corrected them']]};
+const USO_MIN = {"Entender un concepto":1,"Buscar enfoques o estructura":1,"Resumir textos que he leído":2,"Reescribir o mejorar mi redacción":2,"Corregir gramática y estilo":2,"Traducir":2,"Generar código":3,"Analizar datos":3,"Generar ejemplos o preguntas de repaso":2,"Buscar bibliografía":1,"Discutir la interpretación de un resultado":3,"Otro":null};
+const USO_I18N = {pt:["Compreender um conceito","Procurar abordagens ou estrutura","Resumir textos que li","Reescrever ou melhorar a minha redação","Corrigir gramática e estilo","Traduzir","Gerar código","Analisar dados","Gerar exemplos ou perguntas de revisão","Procurar bibliografia","Discutir a interpretação de um resultado","Outro"],
+  en:["Understanding a concept","Finding approaches or structure","Summarising texts I had read","Rewriting or improving my writing","Correcting grammar and style","Translating","Generating code","Analysing data","Generating examples or revision questions","Searching for literature","Discussing the interpretation of a result","Other"]};
+const usoLang = (u, l) => l === 'es' ? u.toLowerCase() : (USO_I18N[l][USOS.indexOf(u)] || u).toLowerCase();
+const TOOLS = {chatgpt:['OpenAI','ChatGPT','https://chatgpt.com','San Francisco'], claude:['Anthropic','Claude','https://claude.ai','San Francisco'], gemini:['Google','Gemini','https://gemini.google.com','Mountain View'], copilot:['Microsoft','Copilot','https://copilot.microsoft.com','Redmond'], deepl:['DeepL SE','DeepL','https://www.deepl.com','Colonia','mt'], perplexity:['Perplexity AI','Perplexity','https://www.perplexity.ai','San Francisco'], notebooklm:['Google','NotebookLM','https://notebooklm.google.com','Mountain View'], grammarly:['Grammarly','Grammarly','https://www.grammarly.com','San Francisco','asist'], deepseek:['DeepSeek','DeepSeek','https://chat.deepseek.com','Hangzhou'], mistral:['Mistral AI','Le Chat','https://chat.mistral.ai','París']};
+
+/* ══════════ ESTADO (compatible con la versión 1) ══════════ */
+const LS_KEY = 'ia_openai_key', LS_STATE = 'criteria_state';
+const S0 = () => ({nombre:'', asig:'', trabajo:'', tipo:'Práctica o actividad', uni:'', prof:'', lang:'es', norma:'apa', nivel:null, nivelDocente:null, model:'gpt-6-luna', log:[], quiz:{i:0, aciertos:0, hechas:[]}, decl:'', refs:null, refsTxt:''});
+let S = S0();
+function save(){ if(S._demo) return; try{ localStorage.setItem(LS_STATE, JSON.stringify(S)); }catch(e){} }
+function load(){ S = S0(); try{ const r = localStorage.getItem(LS_STATE); if(r) S = Object.assign(S, JSON.parse(r)); }catch(e){}
+  if(!Array.isArray(S.log)) S.log = []; if(!S.quiz) S.quiz = {i:0, aciertos:0, hechas:[]};
+  S.log.forEach(e => { if(!e.iso){ const m = String(e.fecha || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); e.iso = m ? `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}` : new Date().toISOString().slice(0,10); } }); }
+
+/* ══════════ NAVEGACIÓN ══════════ */
+let step = 0;
+const STEPS = ['Inicio','Tu trabajo','Nivel','Bitácora','Referencias','Declaración','Entrenar'];
+function buildStepper(){
+  $('#stepper').innerHTML = STEPS.map((s,i) => `${i ? `<span class="sline${i <= step ? ' on' : ''}"></span>` : ''}<button class="sdot" type="button" data-go="${i}" data-state="${i < step ? 'done' : i === step ? 'now' : ''}" ${i === step ? 'aria-current="step"' : ''}><span class="n">${i < step ? ico('check') : i === 0 ? ico('shield') : i === 1 ? ico('pencil') : i === 6 ? ico('scale') : i - 1}</span><span class="lbl">${s}</span></button>`).join('');
+  $$('#stepper [data-go]').forEach(b => b.onclick = () => go(+b.dataset.go));
+}
+function go(i){
+  step = i;
+  $$('.screen').forEach(s => s.classList.toggle('on', +s.dataset.step === i));
+  $('#progBar').style.width = (i / 6 * 100) + '%';
+  buildStepper(); updateNav();
+  if(i === 2) renderNiveles();
+  if(i === 3){ renderLog(); avisoUso(); }
+  if(i === 4){ if(S.refs && !$('#refList').innerHTML){ RESULTADOS = S.refs; pintarRefs(); } }
+  if(i === 5){ renderCoherencia(); renderCitas(); if(!S.decl) genBase(); else $('#dOut').textContent = S.decl; }
+  if(i === 6) renderQuiz();
+  window.scrollTo({top:0, behavior:'instant'});
+}
+const HINTS = ['Prepara tu declaración o mira un <b>ejemplo</b>.', 'Solo sirve para rellenar la declaración.', 'Elige el nivel que fija tu profesor para <b>esta</b> tarea.', 'Anota cada uso en el momento: luego no te acordarás.', 'Una referencia inventada se detecta en diez segundos.', 'Revisa los <b>avisos</b> antes de copiar la declaración.', 'Sin trampas: se trata de reconocer la situación.'];
+const NEXT = ['Empezar','Siguiente: el nivel','Siguiente: la bitácora','Siguiente: las referencias','Siguiente: la declaración','Practicar con casos','Volver al inicio'];
+function updateNav(){ $('#navBack').classList.toggle('hidden', step === 0); $('#navNextTxt').textContent = NEXT[step]; $('#navHint').innerHTML = HINTS[step]; }
+$('#navBack').onclick = () => { if(step > 0) go(step - 1); };
+$('#navNext').onclick = () => { if(step === 2 && S.nivel == null) toast('Aún no has elegido el nivel: la declaración lo necesita'); go(step === 6 ? 0 : step + 1); };
+$('#goHome').onclick = () => go(0);
+function renderHeader(){ const n = S.nivel; $('#hLv').innerHTML = n == null ? 'Nivel —' : `<i style="background:${NIV_COL[n]}">${n}</i>${esc(NIVELES[n].t)}`; }
+
+/* ══════════ TU TRABAJO ══════════ */
+const CAMPOS = {cNombre:'nombre', cAsig:'asig', cTrabajo:'trabajo', cTipo:'tipo', cUni:'uni', cProf:'prof', cLang:'lang', cNorma:'norma'};
+function escribirForm(){ Object.entries(CAMPOS).forEach(([id,k]) => $('#' + id).value = S[k] ?? ''); $('#model').value = S.model || 'gpt-6-luna'; }
+Object.entries(CAMPOS).forEach(([id,k]) => $('#' + id).addEventListener($('#' + id).tagName === 'SELECT' ? 'change' : 'input', e => { S[k] = e.target.value; S.decl = ''; save(); }));
+
+/* ══════════ NIVELES ══════════ */
+function renderNiveles(){
+  $('#niveles').innerHTML = (S.nivelDocente != null ? `<div class="oficial" style="background:var(--tinta);color:#EAF1F7;border-radius:14px;padding:12px 16px">${ico('shield')} Tu profesor ha fijado el <b>nivel ${S.nivelDocente}</b> para esta tarea.</div>` : '') + NIVELES.map(l => `
+    <div class="lv ${S.nivel === l.n ? 'on' : ''}" data-n="${l.n}" style="--c:${NIV_COL[l.n]}" role="button" tabindex="0" aria-pressed="${S.nivel === l.n}">
+      <div class="lv-h"><div class="lv-n">${l.n}</div><div><div class="lv-t">${esc(l.t)}</div><div class="lv-s">${esc(l.s)}</div></div></div>
+      <div class="lv-d"><div class="lv-col si"><b>Puedes</b><ul>${l.si.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div class="lv-col no"><b>No puedes</b><ul>${l.no.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div class="lv-col ev"><b>Guarda</b><ul>${l.ev.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div></div>`).join('');
+  $$('#niveles .lv').forEach(el => { const f = () => { const n = +el.dataset.n; S.nivel = S.nivel === n ? null : n; S.decl = ''; save(); renderNiveles(); renderHeader(); }; el.onclick = f; el.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); f(); } }; });
+}
+const CORREO = {
+  es:d => ({asunto:`Consulta sobre el uso de IA en ${d.trabajo || 'la tarea'} · ${d.asig}`, cuerpo:`Estimado/a profesor/a${d.prof ? ' ' + d.prof : ''}:\n\nSoy ${d.nombre || '[tu nombre]'}, de ${d.asig || '[asignatura]'}. Antes de empezar ${d.trabajo ? '«' + d.trabajo + '»' : 'la tarea'} quería consultarle qué uso de herramientas de inteligencia artificial generativa está permitido, porque no lo he encontrado en el enunciado ni en la guía docente.\n\nEn concreto, ¿podría usarla para entender conceptos o buscar enfoques antes de escribir? ¿Y para revisar la redacción de un texto propio? En cualquier caso, declararé el uso que haga.\n\nMuchas gracias.\nUn saludo,\n${d.nombre || ''}`}),
+  pt:d => ({asunto:`Consulta sobre o uso de IA em ${d.trabajo || 'a tarefa'} · ${d.asig}`, cuerpo:`Caro/a professor/a${d.prof ? ' ' + d.prof : ''}:\n\nSou ${d.nombre || '[o teu nome]'}, de ${d.asig || '[unidade curricular]'}. Antes de começar ${d.trabajo ? '«' + d.trabajo + '»' : 'a tarefa'}, gostaria de saber que uso de ferramentas de inteligência artificial generativa é permitido, porque não o encontrei no enunciado nem no programa.\n\nEm concreto, poderia usá-la para compreender conceitos ou procurar abordagens antes de escrever? E para rever a redação de um texto meu? Em qualquer caso, declararei o uso que fizer.\n\nMuito obrigado/a.\nCumprimentos,\n${d.nombre || ''}`}),
+  en:d => ({asunto:`Question about AI use in ${d.trabajo || 'the assignment'} · ${d.asig}`, cuerpo:`Dear ${d.prof || 'Professor'},\n\nI am ${d.nombre || '[your name]'}, from ${d.asig || '[course]'}. Before starting ${d.trabajo ? '"' + d.trabajo + '"' : 'the assignment'}, I would like to ask what use of generative AI tools is allowed, as I could not find it in the brief or the course guide.\n\nSpecifically, may I use it to understand concepts or explore approaches before writing? And to review the wording of my own text? In any case, I will declare any use I make.\n\nMany thanks.\nKind regards,\n${d.nombre || ''}`})};
+$('#btnCorreo').onclick = () => { const c = CORREO[S.lang || 'es'](S); mostrarTexto('Correo a tu profesor', `<p class="help" style="margin:0 0 8px"><b>Asunto:</b> ${esc(c.asunto)}</p><pre class="out" style="white-space:pre-wrap;font-family:var(--texto);font-size:14.5px">${esc(c.cuerpo)}</pre><div class="actions" style="margin-top:10px"><button class="btn btn-dark btn-sm" id="cpCorreo" type="button">${ico('copy')}Copiar</button><a class="btn btn-ghost btn-sm" href="mailto:?subject=${encodeURIComponent(c.asunto)}&body=${encodeURIComponent(c.cuerpo)}">${ico('ext')}Abrir en el correo</a></div>`); $('#cpCorreo').onclick = () => navigator.clipboard.writeText(c.cuerpo).then(() => toast('Copiado')); };
+
+/* ══════════ BITÁCORA CON CONTROL DE COHERENCIA ══════════ */
+const fuera = e => S.nivel != null && (S.nivel === 0 || (USO_MIN[e.uso] != null && USO_MIN[e.uso] > S.nivel));
+function avisoUso(){
+  const u = $('#bUso').value, m = USO_MIN[u];
+  $('#bAviso').innerHTML = S.nivel == null ? `<div class="tip" style="margin:0">${ico('bulb')}<span>Elige antes el nivel de tu tarea: así te aviso si un uso no está permitido.</span></div>`
+    : (S.nivel === 0 || (m != null && m > S.nivel)) ? `<div class="aviso" style="margin:0"><b>Ojo:</b> «${esc(u)}» ${S.nivel === 0 ? 'no está permitido en una tarea sin IA' : `corresponde al nivel ${m} o superior y tu tarea es de nivel ${S.nivel}`}. Si ya lo has hecho, anótalo igualmente y habla con tu profesor antes de entregar: ocultarlo es peor.</div>` : '';
+}
+$('#bUso').onchange = avisoUso;
+function renderLog(){
+  if(!S.log.length){ $('#bList').innerHTML = '<p class="empty">Todavía no has anotado nada. La primera vez que uses IA en este trabajo, vuelve aquí.</p>'; return; }
+  $('#bList').innerHTML = `<div class="tbl-wrap"><table class="log"><thead><tr><th>Fecha</th><th>Herramienta</th><th>Uso</th><th>Qué hiciste</th><th></th></tr></thead><tbody>${S.log.map((e,i) => `<tr class="${fuera(e) ? 'fuera' : ''}"><td style="white-space:nowrap">${esc(e.fecha)}</td><td>${esc(e.tool)}${e.ver ? `<br><small>${esc(e.ver)}</small>` : ''}</td><td>${esc(e.uso)}${e.verif ? ' <span class="verdict v-ok">verificado</span>' : ''}${fuera(e) ? `<br><small style="color:var(--brasa);font-weight:700">Fuera del nivel ${S.nivel}</small>` : ''}</td><td>${esc(e.accion || '—')}${e.prompt ? `<br><small>«${esc(e.prompt.slice(0, 120))}»</small>` : ''}</td><td><button class="iconbtn" type="button" data-del="${i}" aria-label="Borrar">${ico('trash')}</button></td></tr>`).join('')}</tbody></table></div>`;
+  $$('#bList [data-del]').forEach(b => b.onclick = () => { S.log.splice(+b.dataset.del, 1); S.decl = ''; save(); renderLog(); });
+}
+$('#bAdd').onclick = () => {
+  const tool = $('#bTool').value.trim(), uso = $('#bUso').value;
+  if(!tool){ $('#bTool').focus(); return toast('¿Qué herramienta usaste?'); }
+  const d = new Date();
+  S.log.push({fecha:d.toLocaleDateString('es-ES'), iso:d.toISOString().slice(0,10), tool, ver:$('#bVer').value.trim(), uso, prompt:$('#bPrompt').value.trim(), accion:$('#bAccion').value.trim(), verif:$('#bVerif').checked});
+  S.decl = ''; save(); ['#bPrompt','#bAccion'].forEach(s => $(s).value = ''); $('#bVerif').checked = false; renderLog(); toast('Anotado');
+};
+function anexoTexto(){
+  let t = `# Anexo · Registro de uso de IA generativa\n\n${S.nombre || ''} · ${S.asig || ''}${S.trabajo ? ' · ' + S.trabajo : ''}\n\nNivel de uso: ${S.nivel == null ? 'no indicado' : S.nivel + ' — ' + NIVELES[S.nivel].t}\n\n`;
+  S.log.forEach((e,i) => { t += `${i + 1}. **${e.fecha}** · ${e.tool}${e.ver ? ' (' + e.ver + ')' : ''} · ${e.uso}${e.verif ? ' · verificado' : ''}\n`; if(e.prompt) t += `   - Petición: ${e.prompt}\n`; if(e.accion) t += `   - Uso dado a la respuesta: ${e.accion}\n`; });
+  return t;
+}
+$('#bExp').onclick = () => dl('anexo_uso_IA.md', anexoTexto(), 'text/markdown');
+
+/* ══════════ REFERENCIAS: además de Crossref, retractaciones en OpenAlex ══════════ */
+async function retractada(doi){ try{ const r = await fetch('https://api.openalex.org/works/https://doi.org/' + encodeURIComponent(doi) + '?select=is_retracted,display_name'); if(!r.ok) return false; return !!(await r.json()).is_retracted; }catch(e){ return false; } }
+const _comprobar = comprobar;
+comprobar = async function(){
+  await _comprobar();
+  for(const r of RESULTADOS){ if(r.doi && r.verdict !== 'bad' && await retractada(r.doi)){ r.verdict = 'bad'; r.msg = 'Existe, pero está RETRACTADA: la revista la retiró. No la cites como apoyo de nada.'; } }
+  pintarRefs(); S.refs = RESULTADOS; S.refsTxt = $('#refIn').value; S.decl = ''; save();
+  $('#expRefs').classList.remove('hidden');
+};
+$('#doCheck').onclick = () => comprobar();
+$('#loadDemo').onclick = () => { $('#refIn').value = `Page, M. J., McKenzie, J. E., Bossuyt, P. M. y cols. (2021). The PRISMA 2020 statement: an updated guideline for reporting systematic reviews. BMJ, 372, n71. https://doi.org/10.1136/bmj.n71\nMartínez Ruiz, P. y Delgado Sanz, C. (2022). Aprendizaje adaptativo mediado por IA en estudios de grado. Revista Iberoamericana de Educación Superior, 41(2), 88-104. https://doi.org/10.1016/j.riesup.2022.02.011\nCohen, J. (1988). Statistical power analysis for the behavioral sciences (2ª ed.). Lawrence Erlbaum Associates.`; toast('Ejemplo cargado. Comprueba cuál de las tres no existe.'); };
+$('#expRefs').onclick = () => { let t = '# Verificación de referencias\n\n' + new Date().toLocaleString('es-ES') + '\n\n'; RESULTADOS.forEach((r,i) => { t += `${i + 1}. **${r.verdict === 'ok' ? 'EXISTE' : r.verdict === 'warn' ? 'NO COINCIDE' : 'NO LOCALIZADA O RETRACTADA'}** · ${r.ref}\n   - ${r.msg}${r.doi ? ' · https://doi.org/' + r.doi : ''}\n`; }); dl('verificacion_referencias.md', t, 'text/markdown'); };
+$('#refIn').addEventListener('input', () => { S.refsTxt = $('#refIn').value; save(); });
+
+/* ══════════ DECLARACIÓN (es · pt · en) ══════════ */
+const TX = {
+  es:{sin:'Declaro que en la elaboración de este trabajo no he utilizado herramientas de inteligencia artificial generativa.', con:'Declaro haber utilizado herramientas de inteligencia artificial generativa en la elaboración de este trabajo', niv:(n,t) => `en un uso correspondiente al nivel ${n} («${t}»)`, usos:'Concretamente, las he empleado para: ', resp:v => `Asumo la responsabilidad íntegra sobre el contenido entregado. He revisado y verificado la información obtenida por estos medios${v ? `, dejando constancia de ${v} comprobación${v > 1 ? 'es' : ''} en el registro de uso adjunto` : ''}, y las ideas, la estructura y las conclusiones son de mi autoría.`, refs:n => `He comprobado en Crossref y OpenAlex la existencia de las ${n} referencias bibliográficas citadas.`, tab:'Fecha | Herramienta | Uso | Verificado', si:'Sí', no:'No', reg:'Registro de usos:'},
+  pt:{sin:'Declaro que não utilizei ferramentas de inteligência artificial generativa na elaboração deste trabalho.', con:'Declaro ter utilizado ferramentas de inteligência artificial generativa na elaboração deste trabalho', niv:(n,t) => `num uso correspondente ao nível ${n} («${t}»)`, usos:'Concretamente, utilizei-as para: ', resp:v => `Assumo a responsabilidade integral pelo conteúdo entregue. Revi e verifiquei a informação obtida por estes meios${v ? `, deixando registo de ${v} verificaç${v > 1 ? 'ões' : 'ão'} no registo de utilização anexo` : ''}, e as ideias, a estrutura e as conclusões são da minha autoria.`, refs:n => `Verifiquei no Crossref e no OpenAlex a existência das ${n} referências bibliográficas citadas.`, tab:'Data | Ferramenta | Utilização | Verificado', si:'Sim', no:'Não', reg:'Registo de utilizações:'},
+  en:{sin:'I declare that I have not used generative artificial intelligence tools in the preparation of this work.', con:'I declare that I have used generative artificial intelligence tools in the preparation of this work', niv:(n,t) => `at a level of use corresponding to level ${n} ("${t}")`, usos:'Specifically, I used them for: ', resp:v => `I take full responsibility for the submitted content. I have reviewed and verified the information obtained through these tools${v ? `, recording ${v} check${v > 1 ? 's' : ''} in the attached usage log` : ''}, and the ideas, structure and conclusions are my own.`, refs:n => `I checked in Crossref and OpenAlex that the ${n} cited references exist.`, tab:'Date | Tool | Use | Verified', si:'Yes', no:'No', reg:'Usage log:'}};
+const LUGAR = {pt:{'Apartado de metodología':'Secção de metodologia','Anexo de declaración de uso de IA':'Anexo de declaração de uso de IA','Nota al inicio del trabajo':'Nota no início do trabalho','Apartado de agradecimientos':'Agradecimentos'}, en:{'Apartado de metodología':'Methods section','Anexo de declaración de uso de IA':'AI use declaration appendix','Nota al inicio del trabajo':'Note at the start of the work','Apartado de agradecimientos':'Acknowledgements'}};
+function declaracionTexto(){
+  if(S.nivel == null) return 'Elige primero el nivel de uso en el paso «Nivel».';
+  const l = S.lang || 'es', T = TX[l], L = NIVELES[S.nivel], est = $('#dEstilo').value, lugar = $('#dLugar').value;
+  const tl = l === 'es' ? L.t : NIV_I18N[l][S.nivel][0], dcl = l === 'es' ? L.dcl : NIV_I18N[l][S.nivel][1];
+  const usos = [...new Set(S.log.map(e => e.uso))], tools = [...new Set(S.log.map(e => e.tool + (e.ver ? ` (${e.ver})` : '')))], verif = S.log.filter(e => e.verif).length;
+  const nOk = (S.refs || []).filter(r => r.verdict === 'ok').length, nRef = (S.refs || []).length;
+  let t;
+  if(S.nivel === 0 && !S.log.length) t = T.sin;
+  else {
+    t = `${T.con}${tools.length ? ` (${tools.join(', ')})` : ''}, ${T.niv(L.n, tl)}${dcl ? ': ' + dcl : ''}.`;
+    if(est !== 'breve' && usos.length) t += `\n\n${T.usos}${usos.map(u => usoLang(u, l)).join('; ')}.`;
+    t += `\n\n${T.resp(verif)}`;
+    if(nRef && nOk === nRef) t += ` ${T.refs(nRef)}`;
+    if(est === 'tabla' && S.log.length){ t += `\n\n${T.reg}\n${T.tab}\n`; S.log.forEach(e => t += `${e.fecha} | ${e.tool} | ${usoLang(e.uso, l)} | ${e.verif ? T.si : T.no}\n`); }
+  }
+  return `[${l === 'es' ? lugar : LUGAR[l][lugar]}]\n\n${t}\n`;
+}
+function genBase(){ S.decl = declaracionTexto(); $('#dOut').textContent = S.decl; save(); }
+$('#dGen').onclick = async () => {
+  genBase(); renderCoherencia();
+  const key = localStorage.getItem(LS_KEY); if(!key || S.nivel == null){ $('#dPulir').textContent = key ? '' : 'Con una clave de OpenAI en «Ajustes» se puede pulir la redacción.'; return; }
+  const btn = $('#dGen'); busy(btn, true, 'Puliendo');
+  try{
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer ' + key},
+      body:JSON.stringify({model:S.model || 'gpt-6-luna', messages:[{role:'system', content:`Eres corrector de estilo académico. Recibes una declaración de uso de IA para un trabajo universitario, en ${({es:'español',pt:'portugués',en:'inglés'})[S.lang || 'es']}. Mejora su redacción para que suene natural y formal, en primera persona y en el mismo idioma. No añadas hechos, herramientas, usos, fechas ni compromisos que no estén en el original. Conserva la primera línea entre corchetes y la tabla si la hay. Devuelve solo el texto.`}, {role:'user', content:S.decl}]})});
+    if(r.ok){ const j = await r.json(); const t = (j.choices?.[0]?.message?.content || '').trim(); if(t){ S.decl = t; $('#dOut').textContent = t; save(); $('#dPulir').textContent = 'Redacción pulida por la IA sin añadir hechos. Compruébalo antes de usarla.'; } }
+    else $('#dPulir').textContent = 'No se pudo pulir (' + r.status + '); se mantiene la versión base.';
+  }catch(e){ $('#dPulir').textContent = 'Sin conexión con OpenAI; se mantiene la versión base.'; }
+  busy(btn, false);
+};
+$('#dEstilo').onchange = $('#dLugar').onchange = () => genBase();
+$('#dCopy').onclick = () => navigator.clipboard.writeText($('#dOut').textContent).then(() => toast('Declaración copiada'), () => toast('No se pudo copiar'));
+$('#dMd').onclick = () => dl('declaracion_uso_IA.md', `# Declaración de uso de IA generativa\n\n${$('#dOut').textContent}\n\n## Referencias de las herramientas\n\n${citasTexto().map(c => '- ' + c).join('\n')}\n\n${anexoTexto()}`, 'text/markdown');
+function renderCoherencia(){
+  const av = [];
+  if(S.nivel == null) av.push(['alta','No has elegido el nivel de uso de la tarea.']);
+  const f = S.log.filter(fuera);
+  if(f.length) av.push(['alta', `${f.length} uso${f.length > 1 ? 's' : ''} de la bitácora ${f.length > 1 ? 'quedan' : 'queda'} por encima del nivel ${S.nivel}: ${[...new Set(f.map(e => e.uso))].join(', ')}. Háblalo con tu profesor antes de entregar; la declaración lo refleja tal cual.`]);
+  if(S.nivel >= 2 && S.log.some(e => !e.verif)) av.push(['media', `${S.log.filter(e => !e.verif).length} entrada${S.log.filter(e => !e.verif).length > 1 ? 's' : ''} sin marcar como verificada${S.log.filter(e => !e.verif).length > 1 ? 's' : ''}. A partir del nivel 2, todo lo que devuelve la IA se comprueba.`]);
+  if(S.log.some(e => e.uso === 'Buscar bibliografía') && !S.refs) av.push(['media','Usaste IA para buscar bibliografía pero no has comprobado las referencias en el paso anterior.']);
+  const mal = (S.refs || []).filter(r => r.verdict !== 'ok');
+  if(mal.length) av.push(['media', `${mal.length} referencia${mal.length > 1 ? 's' : ''} no se ha${mal.length > 1 ? 'n' : ''} podido confirmar o está${mal.length > 1 ? 'n' : ''} retractada${mal.length > 1 ? 's' : ''}.`]);
+  if(S.nivel >= 1 && !S.log.length) av.push(['baja','La bitácora está vacía: la declaración será genérica, sin usos concretos.']);
+  $('#coherencia').innerHTML = av.length ? `<div class="card"><h3>${ico('shield')}Antes de declarar</h3><ul class="checks">${av.map(([g,m]) => `<li class="${g === 'baja' ? '' : ''}" style="color:${g === 'alta' ? 'var(--brasa)' : g === 'media' ? '#8A5A00' : 'var(--gris)'}"><span class="ck" style="border-color:currentColor">!</span>${esc(m)}</li>`).join('')}</ul></div>`
+    : `<div class="okbox">${ico('check')}<span>Nivel elegido, usos dentro del nivel, todo verificado${S.refs ? ' y referencias comprobadas' : ''}. Tu declaración es coherente.</span></div>`;
+}
+function citasTexto(){
+  const l = S.lang || 'es', por = {};
+  S.log.forEach(e => { const k = e.tool.toLowerCase().replace(/[^a-z]/g, ''); const m = Object.keys(TOOLS).find(t => k.includes(t)); const id = (m || e.tool) + '|' + (e.ver || ''); if(!por[id] || e.iso > por[id].iso) por[id] = {...e, info:m ? TOOLS[m] : [e.tool, e.tool, '', '']}; });
+  const TIPO = {llm:{es:'Modelo de lenguaje de gran tamaño', pt:'Modelo de linguagem de grande escala', en:'Large language model'}, mt:{es:'Traductor automático', pt:'Tradutor automático', en:'Machine translation tool'}, asist:{es:'Asistente de escritura', pt:'Assistente de escrita', en:'Writing assistant'}};
+  const ver = {es:'versión', pt:'versão', en:'version'}[l], disp = {es:'Disponible en', pt:'Disponível em', en:'Available from'}[l], cons = {es:'Consultado', pt:'Consultado', en:'Accessed'}[l], cit = {es:'citado', pt:'citado', en:'cited'}[l];
+  return Object.values(por).map(e => { const [aut, nom, url, ciu, tp] = e.info, tipo = TIPO[tp || 'llm'][l], y = e.iso.slice(0,4), fecha = new Date(e.iso + 'T00:00:00').toLocaleDateString(l === 'en' ? 'en-GB' : l === 'pt' ? 'pt-PT' : 'es-ES', {day:'numeric', month:'long', year:'numeric'});
+    if(S.norma === 'vancouver') return `${aut}. ${nom} [Internet]${e.ver ? `. ${ver[0].toUpperCase() + ver.slice(1)} ${e.ver}` : ''}. ${ciu ? ciu + ': ' : ''}${aut}; ${y} [${cit} ${fecha}]. ${disp}: ${url || '[URL]'}`;
+    if(S.norma === 'harvard') return `${aut} (${y}) ${nom}${e.ver ? ` (${ver} ${e.ver})` : ''} [${tipo}]. ${disp}: ${url || '[URL]'} (${cons}: ${fecha}).`;
+    return `${aut}. (${y}). ${nom}${e.ver ? ` (${ver} ${e.ver})` : ''} [${tipo}]. ${url || '[URL]'}`; });
+}
+function renderCitas(){ const c = citasTexto(); $('#citas').innerHTML = c.length ? c.map(x => `<div class="cita-tool">${esc(x)}</div>`).join('') + `<div class="actions" style="margin-top:10px"><button class="btn btn-ghost btn-sm" id="cpCitas" type="button">${ico('copy')}Copiar las citas</button></div>` : '<p class="help">Aparecerán aquí cuando anotes en la bitácora las herramientas que usas.</p>'; const b = $('#cpCitas'); if(b) b.onclick = () => navigator.clipboard.writeText(c.join('\n')).then(() => toast('Citas copiadas')); }
+async function cargaDocx(){ if(window.docx) return window.docx; for(const u of ['https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js','https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js']){ try{ await new Promise((ok,ko) => { const s = document.createElement('script'); s.src = u; s.onload = ok; s.onerror = ko; document.head.appendChild(s); }); if(window.docx) return window.docx; }catch(e){} } throw new Error('No se pudo cargar la librería de Word'); }
+$('#dDocx').onclick = async () => {
+  try{
+    const D = await cargaDocx(), F = 'Arial', P = (t, o = {}) => new D.Paragraph({spacing:{after:o.after ?? 140}, heading:o.h, children:[new D.TextRun({text:t, font:F, size:o.size || 22, bold:o.b, italics:o.i, color:o.c})]});
+    const kids = [P({es:'Declaración de uso de inteligencia artificial generativa', pt:'Declaração de uso de inteligência artificial generativa', en:'Declaration of generative artificial intelligence use'}[S.lang || 'es'], {h:D.HeadingLevel.HEADING_1})];
+    kids.push(P([S.nombre, S.asig, S.trabajo, S.uni].filter(Boolean).join(' · '), {c:'5D7691', size:20}));
+    $('#dOut').textContent.split('\n').forEach(l => { if(!/\|/.test(l)) kids.push(P(l, {after:l.trim() ? 140 : 40})); });
+    const c = citasTexto(); if(c.length){ kids.push(P({es:'Referencias de las herramientas', pt:'Referências das ferramentas', en:'Tool references'}[S.lang || 'es'], {h:D.HeadingLevel.HEADING_2})); c.forEach(x => kids.push(P(x))); }
+    if(S.log.length){
+      kids.push(P({es:'Anexo · Registro de uso', pt:'Anexo · Registo de utilização', en:'Appendix · Usage log'}[S.lang || 'es'], {h:D.HeadingLevel.HEADING_2}));
+      const bd = {style:D.BorderStyle.SINGLE, size:1, color:'D8E0E9'}, cell = (t, h) => new D.TableCell({borders:{top:bd,bottom:bd,left:bd,right:bd}, shading:h ? {fill:'0F2237', type:D.ShadingType.CLEAR} : undefined, children:[new D.Paragraph({children:[new D.TextRun({text:String(t || ''), font:F, size:18, bold:h, color:h ? 'FFFFFF' : undefined})]})]});
+      kids.push(new D.Table({width:{size:100, type:D.WidthType.PERCENTAGE}, rows:[new D.TableRow({tableHeader:true, children:({es:['Fecha','Herramienta','Uso','Petición','Qué hice','Verificado'], pt:['Data','Ferramenta','Utilização','Pedido','O que fiz','Verificado'], en:['Date','Tool','Use','Prompt','What I did','Verified']})[S.lang || 'es'].map(x => cell(x, true))}), ...S.log.map(e => new D.TableRow({children:[e.fecha, e.tool + (e.ver ? ' (' + e.ver + ')' : ''), (S.lang || 'es') === 'es' ? e.uso : usoLang(e.uso, S.lang), e.prompt, e.accion, e.verif ? TX[S.lang || 'es'].si : TX[S.lang || 'es'].no].map(x => cell(x))}))]}));
+    }
+    dl('declaracion_uso_IA.docx', await D.Packer.toBlob(new D.Document({creator:'CriterIA', sections:[{children:kids}]})));
+    toast('Word descargado');
+  }catch(e){ toast(e.message); }
+};
+
+/* ══════════ ENTRENAR ══════════ */
+function renderQuiz(){
+  const q = S.quiz; $('#qProg').style.width = Math.round(q.i / QUIZ.length * 100) + '%';
+  if(q.i >= QUIZ.length){ const pct = Math.round(q.aciertos / QUIZ.length * 100);
+    $('#quiz').innerHTML = `<div class="${pct >= 80 ? 'okbox' : 'tip'}" style="display:block"><b>${q.aciertos} de ${QUIZ.length}.</b> ${pct >= 80 ? 'Tienes el criterio bien calibrado. Lo difícil es aplicarlo cuando vas con prisa.' : pct >= 60 ? 'Vas bien, pero repasa las que fallaste: suelen ser las que más caro salen.' : 'Merece la pena repetirlo leyendo las explicaciones con calma.'}</div><button class="btn btn-primary" id="qReset" type="button">${ico('refresh')}Empezar de nuevo</button>`;
+    $('#qReset').onclick = () => { S.quiz = {i:0, aciertos:0, hechas:[]}; save(); renderQuiz(); }; return; }
+  const it = QUIZ[q.i], h = q.hechas[q.i];
+  $('#quiz').innerHTML = `<p class="sublab" style="margin-top:0">Situación ${q.i + 1} de ${QUIZ.length}</p><p style="font-weight:600;font-size:16.5px;margin:0 0 14px">${esc(it.q)}</p>${it.o.map((o,i) => `<div class="q-opt ${h != null ? 'locked ' : ''}${h != null && i === it.r ? 'right' : ''}${h != null && h === i && i !== it.r ? 'wrong' : ''}" data-i="${i}" role="button" tabindex="0">${esc(o)}</div>`).join('')}${h != null ? `<div class="q-exp">${esc(it.e)}</div><div class="actions" style="margin-top:12px"><button class="btn btn-primary" id="qNext" type="button">${q.i === QUIZ.length - 1 ? 'Ver resultado' : 'Siguiente'}</button></div>` : ''}`;
+  if(h == null) $$('#quiz .q-opt').forEach(el => el.onclick = () => { const i = +el.dataset.i; S.quiz.hechas[S.quiz.i] = i; if(i === it.r) S.quiz.aciertos++; save(); renderQuiz(); });
+  else $('#qNext').onclick = () => { S.quiz.i++; save(); renderQuiz(); };
+}
+
+/* ══════════ ENLACE PARA EL PROFESORADO ══════════ */
+function mostrarTexto(tit, html){ $('#mTxT').textContent = tit; $('#mTxB').innerHTML = html; $('#mTexto').classList.add('on'); }
+$('#btnDocente').onclick = () => {
+  mostrarTexto('Enlace para tu tarea', `<div class="grid2"><div class="field"><label for="dkAsig">Asignatura</label><input type="text" id="dkAsig" value="${esc(S.asig)}"></div><div class="field"><label for="dkTarea">Tarea</label><input type="text" id="dkTarea" placeholder="Práctica 2"></div></div><div class="field"><span class="lab">Nivel de uso permitido</span><div class="seg" id="dkNiv">${NIVELES.map(l => `<button type="button" data-n="${l.n}">${l.n} · ${esc(l.t)}</button>`).join('')}</div></div><div id="dkOut"></div>`);
+  let n = 2; const pinta = () => {
+    $$('#dkNiv button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.n === n)));
+    const L = NIVELES[n], a = $('#dkAsig').value.trim(), t = $('#dkTarea').value.trim();
+    const url = location.origin + location.pathname + '#n=' + n + (a ? '&a=' + encodeURIComponent(a) : '') + (t ? '&t=' + encodeURIComponent(t) : '');
+    const txt = `Uso de inteligencia artificial generativa en ${t || 'esta tarea'}: nivel ${n} («${L.t}»). ${L.s}\nSe puede: ${L.si.join(' ')}\nNo se puede: ${L.no.join(' ')}\nAl entregar, adjunta tu declaración de uso de IA (puedes prepararla en ${url}).`;
+    $('#dkOut').innerHTML = `<p class="sublab">Enlace para tu estudiantado</p><pre class="out" style="white-space:pre-wrap">${esc(url)}</pre><p class="sublab">Texto para el enunciado o la guía docente</p><pre class="out" style="white-space:pre-wrap;font-family:var(--texto)">${esc(txt)}</pre><div class="actions" style="margin-top:10px"><button class="btn btn-dark btn-sm" id="dkCpU" type="button">${ico('copy')}Copiar el enlace</button><button class="btn btn-ghost btn-sm" id="dkCpT" type="button">${ico('copy')}Copiar el texto</button></div>`;
+    $('#dkCpU').onclick = () => navigator.clipboard.writeText(url).then(() => toast('Enlace copiado'));
+    $('#dkCpT').onclick = () => navigator.clipboard.writeText(txt).then(() => toast('Texto copiado'));
+  };
+  $$('#dkNiv button').forEach(b => b.onclick = () => { n = +b.dataset.n; pinta(); });
+  ['#dkAsig','#dkTarea'].forEach(s => $(s).oninput = pinta); pinta();
+};
+function leerEnlace(){
+  const h = new URLSearchParams(location.hash.slice(1)); if(!h.has('n')) return;
+  const n = +h.get('n'); if(!(n >= 0 && n <= 4)) return;
+  S.nivel = n; S.nivelDocente = n; if(h.get('a')) S.asig = h.get('a'); if(h.get('t')) S.trabajo = h.get('t'); S.decl = ''; save();
+  $('#linkBanner').innerHTML = `${ico('shield')}<span>Tu profesor ha fijado el <b>nivel ${n} («${esc(NIVELES[n].t)}»)</b>${S.trabajo ? ` para «${esc(S.trabajo)}»` : ''}${S.asig ? ` de ${esc(S.asig)}` : ''}. Ya está marcado en la app.</span>`;
+  $('#linkBanner').classList.remove('hidden');
+}
+
+/* ══════════ AJUSTES, AYUDA Y EJEMPLO ══════════ */
+$('#btnAjustes').onclick = () => { $('#apiKey').value = localStorage.getItem(LS_KEY) || ''; $('#keyState').textContent = localStorage.getItem(LS_KEY) ? 'Clave guardada en este navegador.' : 'Sin clave: la app funciona igual.'; $('#mAjustes').classList.add('on'); };
+$('#btnEye').onclick = () => { const k = $('#apiKey'); k.type = k.type === 'password' ? 'text' : 'password'; };
+$('#saveKey').onclick = () => { const v = $('#apiKey').value.trim(); if(v) localStorage.setItem(LS_KEY, v); else localStorage.removeItem(LS_KEY); S.model = $('#model').value; save(); $('#keyState').textContent = v ? 'Clave guardada en este navegador.' : 'Clave borrada.'; toast('Ajustes guardados'); };
+$('#expAll').onclick = () => { const s = JSON.parse(JSON.stringify(S)); delete s._demo; dl('criteria_mis_datos.json', JSON.stringify(s, null, 2), 'application/json'); };
+$('#wipe').onclick = () => { if(!confirm('¿Borrar todos tus datos de CriterIA de este navegador?')) return; localStorage.removeItem(LS_STATE); load(); escribirForm(); renderHeader(); toast('Datos borrados'); go(0); };
+const GLOS = [['Nivel de uso','Lo que tu profesor permite en una tarea concreta, de 0 (sin IA) a 4 (IA integral). Cada tarea puede tener un nivel distinto.'],['Bitácora','Registro breve de cada uso: herramienta, para qué, qué pediste y qué hiciste con la respuesta. Es tu mejor prueba de autoría.'],['Fuera de nivel','Un uso que corresponde a un nivel superior al permitido. Si ya ocurrió, no lo borres: háblalo con tu profesor antes de entregar.'],['Verificar','Comprobar en una fuente fiable lo que te devolvió la IA: datos, cifras, citas y explicaciones.'],['Referencia inventada','Los modelos generan referencias verosímiles que no existen o con un DOI de otro trabajo. Por eso se comprueban.'],['Retractada','Publicación retirada por la revista. No sirve como apoyo, aunque exista.'],['Citar la herramienta','Además de declararlo, APA, Vancouver y Harvard piden citar la herramienta en la lista de referencias.'],['Privacidad','Tus datos se guardan solo en este navegador. Las referencias se consultan en Crossref y OpenAlex.']];
+$('#glos').innerHTML = GLOS.map(g => `<div><b>${esc(g[0])}</b><span>${esc(g[1])}</span></div>`).join('');
+$('#btnHelp').onclick = () => $('#mHelp').classList.add('on');
+$$('.modal').forEach(m => m.addEventListener('click', e => { if(e.target === m || e.target.hasAttribute('data-close')) m.classList.remove('on'); }));
+document.addEventListener('keydown', e => { if(e.key === 'Escape') $$('.modal').forEach(m => m.classList.remove('on')); });
+function showDemo(){
+  S = Object.assign(S0(), {_demo:true, nombre:'Lucía Gómez Ferrer', asig:'Bioestadística', trabajo:'Práctica 2: contraste de hipótesis', tipo:'Práctica o actividad', uni:'Universidad de ejemplo', prof:'Dra. Pérez', nivel:2,
+    log:[{fecha:'14/9/2026', iso:'2026-09-14', tool:'ChatGPT', ver:'GPT-5', uso:'Entender un concepto', prompt:'Explícame la diferencia entre error de tipo I y de tipo II con un ejemplo clínico', accion:'Lo contrasté con el manual de la asignatura y escribí mi propia explicación', verif:true},
+      {fecha:'16/9/2026', iso:'2026-09-16', tool:'Claude', ver:'', uso:'Reescribir o mejorar mi redacción', prompt:'Revisa la claridad de mi apartado de resultados sin cambiar el contenido', accion:'Acepté dos cambios de orden de frases y rechacé el resto', verif:true},
+      {fecha:'17/9/2026', iso:'2026-09-17', tool:'ChatGPT', ver:'GPT-5', uso:'Generar código', prompt:'Escríbeme el código en R para una t de Student', accion:'Lo usé tal cual', verif:false},
+      {fecha:'18/9/2026', iso:'2026-09-18', tool:'DeepL', ver:'', uso:'Traducir', prompt:'Traducir el resumen al inglés', accion:'Revisé la traducción con el glosario de la asignatura', verif:true}]});
+  escribirForm(); renderHeader();
+  $('#refIn').value = ''; $('#loadDemo').click();
+  toast('Ejemplo cargado (no se guarda). Mira el aviso de coherencia en la declaración.', 5000);
+  go(5);
+}
+$('#btnDemo').onclick = showDemo;
+$('#btnStart').onclick = () => { if(S._demo){ load(); escribirForm(); renderHeader(); } go(1); };
+
+/* ══════════ ARRANQUE ══════════ */
+load(); leerEnlace();
+$('#bUso').innerHTML = USOS.map(u => `<option>${u}</option>`).join('');
+$('#toolsList').innerHTML = Object.values(TOOLS).map(t => `<option value="${t[1]}">`).join('') + '<option value="ChatGPT">';
+escribirForm(); renderHeader(); if(S.refsTxt) $('#refIn').value = S.refsTxt;
+go(0);
+
 </script>
 </body>
 </html>
